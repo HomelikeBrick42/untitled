@@ -2,23 +2,23 @@
 
 #if PLATFORM_WINDOWS
 
-#include "WindowsOpenGLRenderContext.hpp"
+#include "WindowsOpenGLContext.hpp"
 
-HMODULE WindowsOpenGLRenderContext::OpenGL = nullptr;
-HGLRC (WINAPI *WindowsOpenGLRenderContext::wglCreateContext)(HDC) = nullptr;
-BOOL (WINAPI *WindowsOpenGLRenderContext::wglDeleteContext)(HGLRC) = nullptr;
-HGLRC (WINAPI *WindowsOpenGLRenderContext::wglGetCurrentContext)(void) = nullptr;
-HDC (WINAPI *WindowsOpenGLRenderContext::wglGetCurrentDC)(void) = nullptr;
-PROC (WINAPI *WindowsOpenGLRenderContext::wglGetProcAddress)(LPCSTR) = nullptr;
-BOOL (WINAPI *WindowsOpenGLRenderContext::wglMakeCurrent)(HDC, HGLRC) = nullptr;
+HMODULE WindowsOpenGLContext::OpenGL = nullptr;
+HGLRC (WINAPI *WindowsOpenGLContext::wglCreateContext)(HDC) = nullptr;
+BOOL (WINAPI *WindowsOpenGLContext::wglDeleteContext)(HGLRC) = nullptr;
+HGLRC (WINAPI *WindowsOpenGLContext::wglGetCurrentContext)(void) = nullptr;
+HDC (WINAPI *WindowsOpenGLContext::wglGetCurrentDC)(void) = nullptr;
+PROC (WINAPI *WindowsOpenGLContext::wglGetProcAddress)(LPCSTR) = nullptr;
+BOOL (WINAPI *WindowsOpenGLContext::wglMakeCurrent)(HDC, HGLRC) = nullptr;
 
-WindowsOpenGLRenderContext::WindowsOpenGLRenderContext(const Ref<Surface>& surface)
+WindowsOpenGLContext::WindowsOpenGLContext(const Ref<Surface>& surface)
     : DrawSurface(surface.As<WindowsSurface>()), OpenGLContext(nullptr) {
-    if (WindowsOpenGLRenderContext::OpenGL == nullptr) {
-        WindowsOpenGLRenderContext::OpenGL = LoadLibraryA("OpenGL32.dll");
-#define LOAD(name) WindowsOpenGLRenderContext::name = \
-                    reinterpret_cast<decltype(WindowsOpenGLRenderContext::name)>( \
-                        ::GetProcAddress(WindowsOpenGLRenderContext::OpenGL, #name))
+    if (WindowsOpenGLContext::OpenGL == nullptr) {
+        WindowsOpenGLContext::OpenGL = LoadLibraryA("OpenGL32.dll");
+#define LOAD(name) WindowsOpenGLContext::name = \
+                    reinterpret_cast<decltype(WindowsOpenGLContext::name)>( \
+                        ::GetProcAddress(WindowsOpenGLContext::OpenGL, #name))
         LOAD(wglCreateContext);
         LOAD(wglDeleteContext);
         LOAD(wglGetCurrentContext);
@@ -54,7 +54,7 @@ WindowsOpenGLRenderContext::WindowsOpenGLRenderContext(const Ref<Surface>& surfa
     wglMakeCurrent(this->DrawSurface->DeviceContext, this->OpenGLContext);
 
 #define LOAD(name) \
-    this->name ## Func = reinterpret_cast<decltype(this->name ## Func)>(WindowsOpenGLRenderContext::GetProcAddress(#name))
+    this->name ## Func = reinterpret_cast<decltype(this->name ## Func)>(WindowsOpenGLContext::GetProcAddress(#name))
 
     LOAD(glClearColor);
     LOAD(glClear);
@@ -66,31 +66,31 @@ WindowsOpenGLRenderContext::WindowsOpenGLRenderContext(const Ref<Surface>& surfa
     wglMakeCurrent(prevDeviceContext, prevContext);
 }
 
-WindowsOpenGLRenderContext::~WindowsOpenGLRenderContext() {
+WindowsOpenGLContext::~WindowsOpenGLContext() {
     if (this->OpenGLContext) {
         this->glFlush();
         wglDeleteContext(this->OpenGLContext);
     }
 }
 
-void WindowsOpenGLRenderContext::Present() {
+void WindowsOpenGLContext::Present() {
     ::SwapBuffers(this->DrawSurface->DeviceContext);
 }
 
-void WindowsOpenGLRenderContext::ChangeContextIfNecessary() {
+void WindowsOpenGLContext::ChangeContextIfNecessary() {
     if (wglGetCurrentContext() != this->OpenGLContext) {
         wglMakeCurrent(this->DrawSurface->DeviceContext, this->OpenGLContext);
     }
 }
 
-void* WindowsOpenGLRenderContext::GetProcAddress(const char* name) {
+void* WindowsOpenGLContext::GetProcAddress(const char* name) {
     void* func = reinterpret_cast<void*>(wglGetProcAddress(name));
     if (func == reinterpret_cast<void*>(0) ||
         func == reinterpret_cast<void*>(1) ||
         func == reinterpret_cast<void*>(2) ||
         func == reinterpret_cast<void*>(3) ||
         func == reinterpret_cast<void*>(-1)) {
-        func = reinterpret_cast<void*>(::GetProcAddress(WindowsOpenGLRenderContext::OpenGL, name));
+        func = reinterpret_cast<void*>(::GetProcAddress(WindowsOpenGLContext::OpenGL, name));
     }
     return func;
 }

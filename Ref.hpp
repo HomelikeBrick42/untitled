@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <utility>
 
 class IRef {
 public:
@@ -58,7 +59,7 @@ public:
     }
 
     ~Ref() {
-        this->DefRef();
+        this->DecRef();
     }
 
     Ref& operator=(std::nullptr_t)
@@ -116,7 +117,7 @@ public:
 
     void Reset(T* instance = nullptr)
     {
-        this->DefRef();
+        this->DecRef();
         this->Instance = instance;
     }
 
@@ -138,7 +139,7 @@ private:
         }
     }
 
-    void DefRef() {
+    void DecRef() {
         if (this->Instance) {
             this->Instance->DecRefCount();
             if (this->Instance->GetRefCount() == 0) {

@@ -6,7 +6,7 @@
 
 class WindowsSurface final: public Surface {
 public:
-    friend class WindowsOpenGLRenderContext;
+    friend class WindowsOpenGLContext;
 public:
     WindowsSurface(u32 width, u32 height, const char* title);
     WindowsSurface(WindowsSurface&) = delete;

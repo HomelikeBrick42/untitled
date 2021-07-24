@@ -1,14 +1,14 @@
 #pragma once
 
-#include "OpenGLRenderContext.hpp"
+#include "OpenGLContext.hpp"
 #include "WindowsSurface.hpp"
 
-class WindowsOpenGLRenderContext final: public OpenGLRenderContext {
+class WindowsOpenGLContext final: public OpenGLContext {
 public:
-    explicit WindowsOpenGLRenderContext(const Ref<Surface>& surface);
-    WindowsOpenGLRenderContext(WindowsOpenGLRenderContext&) = delete;
-    WindowsOpenGLRenderContext(WindowsOpenGLRenderContext&&) = delete;
-    ~WindowsOpenGLRenderContext() final;
+    explicit WindowsOpenGLContext(const Ref<Surface>& surface);
+    WindowsOpenGLContext(WindowsOpenGLContext&) = delete;
+    WindowsOpenGLContext(WindowsOpenGLContext&&) = delete;
+    ~WindowsOpenGLContext() final;
 public:
     void Present() final;
 public:

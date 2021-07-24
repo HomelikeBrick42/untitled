@@ -31,16 +31,16 @@ constexpr GLenum GL_COLOR_BUFFER_BIT = 16384;
 constexpr GLenum GL_STENCIL_BUFFER_BIT = 1024;
 constexpr GLenum GL_DEPTH_BUFFER_BIT = 256;
 
-class OpenGLRenderContext: public RenderContext {
+class OpenGLContext: public RenderContext {
 public:
-    OpenGLRenderContext(OpenGLRenderContext&) = delete;
-    OpenGLRenderContext(OpenGLRenderContext&&) = delete;
-    ~OpenGLRenderContext() override = default;
+    OpenGLContext(OpenGLContext&) = delete;
+    OpenGLContext(OpenGLContext&&) = delete;
+    ~OpenGLContext() override = default;
 public:
     virtual void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) = 0;
     virtual void glClear(GLenum mask) = 0;
     virtual void glFlush() = 0;
     virtual void glViewport(GLint x, GLint y, GLsizei width, GLsizei height) = 0;
 protected:
-    OpenGLRenderContext() = default;
+    OpenGLContext() = default;
 };
