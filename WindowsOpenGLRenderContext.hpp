@@ -10,7 +10,7 @@ public:
     WindowsOpenGLRenderContext(WindowsOpenGLRenderContext&&) = delete;
     ~WindowsOpenGLRenderContext() final;
 public:
-    void SwapBuffers() final;
+    void Present() final;
 public:
     void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) final {
         this->ChangeContextIfNecessary();

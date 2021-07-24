@@ -73,7 +73,7 @@ WindowsOpenGLRenderContext::~WindowsOpenGLRenderContext() {
     }
 }
 
-void WindowsOpenGLRenderContext::SwapBuffers() {
+void WindowsOpenGLRenderContext::Present() {
     ::SwapBuffers(this->DrawSurface->DeviceContext);
 }
 

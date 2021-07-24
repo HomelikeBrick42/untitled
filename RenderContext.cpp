@@ -4,11 +4,11 @@
     #include "WindowsOpenGLRenderContext.hpp"
 #endif
 
-std::unique_ptr<RenderContext> RenderContext::Create(Surface *surface, RendererAPI api) {
+Ref<RenderContext> RenderContext::Create(Surface *surface, RendererAPI api) {
     switch (api) {
         case RendererAPI::OpenGL:
         #if PLATFORM_WINDOWS
-            return std::make_unique<WindowsOpenGLRenderContext>(surface);
+            return Ref<WindowsOpenGLRenderContext>::Create(surface);
         #else
             return nullptr;
         #endif

@@ -4,12 +4,12 @@
 
 int main() {
     auto surface1 = Surface::Create(640, 480, "Window 1");
-    auto context1 = RenderContext::Create(surface1.get(), RendererAPI::OpenGL);
-    auto openglContext1 = dynamic_cast<OpenGLRenderContext*>(context1.get());
+    auto context1 = RenderContext::Create(surface1.Raw(), RendererAPI::OpenGL);
+    auto openglContext1 = dynamic_cast<OpenGLRenderContext*>(context1.Raw());
 
     auto surface2 = Surface::Create(640, 480, "Window 2");
-    auto context2 = RenderContext::Create(surface2.get(), RendererAPI::OpenGL);
-    auto openglContext2 = dynamic_cast<OpenGLRenderContext*>(context2.get());
+    auto context2 = RenderContext::Create(surface2.Raw(), RendererAPI::OpenGL);
+    auto openglContext2 = dynamic_cast<OpenGLRenderContext*>(context2.Raw());
 
     bool running = true;
 
@@ -30,16 +30,16 @@ int main() {
     surface2->SetResizeCallback(resizeCallback, openglContext2);
 
     while (running) {
-        openglContext1->glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+        openglContext1->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         openglContext1->glClear(GL_COLOR_BUFFER_BIT);
 
-        context1->SwapBuffers();
+        context1->Present();
         surface1->PollEvents();
 
-        openglContext2->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        openglContext2->glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
         openglContext2->glClear(GL_COLOR_BUFFER_BIT);
 
-        context2->SwapBuffers();
+        context2->Present();
         surface2->PollEvents();
     }
 

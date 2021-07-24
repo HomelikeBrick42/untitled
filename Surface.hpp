@@ -1,15 +1,14 @@
 #pragma once
 
 #include "Defines.hpp"
+#include "Ref.hpp"
 
-#include <memory>
-
-class Surface {
+class Surface: public IRef {
 public:
     using CloseCallbackFunc = void(Surface* surface, void* userData);
     using ResizeCallbackFunc = void(Surface* surface, void* userData, u32 width, u32 height);
 public:
-    static std::unique_ptr<Surface> Create(u32 width, u32 height, const char* title);
+    static Ref<Surface> Create(u32 width, u32 height, const char* title);
     Surface(Surface&) = delete;
     Surface(Surface&&) = delete;
     virtual ~Surface() = default;
