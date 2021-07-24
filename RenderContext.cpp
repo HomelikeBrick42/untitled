@@ -4,7 +4,7 @@
     #include "WindowsOpenGLRenderContext.hpp"
 #endif
 
-Ref<RenderContext> RenderContext::Create(Surface *surface, RendererAPI api) {
+Ref<RenderContext> RenderContext::Create(const Ref<Surface>& surface, RendererAPI api) {
     switch (api) {
         case RendererAPI::OpenGL:
         #if PLATFORM_WINDOWS

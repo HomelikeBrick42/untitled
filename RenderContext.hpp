@@ -10,7 +10,7 @@ enum class RendererAPI {
 
 class RenderContext: public IRef {
 public:
-    static Ref<RenderContext> Create(Surface* surface, RendererAPI api);
+    static Ref<RenderContext> Create(const Ref<Surface>& surface, RendererAPI api);
     RenderContext(RenderContext&) = delete;
     RenderContext(RenderContext&&) = delete;
     virtual ~RenderContext() = default;

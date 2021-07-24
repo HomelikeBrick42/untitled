@@ -5,7 +5,7 @@
 
 class WindowsOpenGLRenderContext final: public OpenGLRenderContext {
 public:
-    explicit WindowsOpenGLRenderContext(Surface* surface);
+    explicit WindowsOpenGLRenderContext(const Ref<Surface>& surface);
     WindowsOpenGLRenderContext(WindowsOpenGLRenderContext&) = delete;
     WindowsOpenGLRenderContext(WindowsOpenGLRenderContext&&) = delete;
     ~WindowsOpenGLRenderContext() final;
@@ -44,7 +44,7 @@ private:
     void ChangeContextIfNecessary();
     static void* GetProcAddress(const char* name);
 private:
-    WindowsSurface* DrawSurface;
+    Ref<WindowsSurface> DrawSurface;
     HGLRC OpenGLContext;
 private:
     static HMODULE OpenGL;

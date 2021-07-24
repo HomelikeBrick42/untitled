@@ -12,8 +12,8 @@ HDC (WINAPI *WindowsOpenGLRenderContext::wglGetCurrentDC)(void) = nullptr;
 PROC (WINAPI *WindowsOpenGLRenderContext::wglGetProcAddress)(LPCSTR) = nullptr;
 BOOL (WINAPI *WindowsOpenGLRenderContext::wglMakeCurrent)(HDC, HGLRC) = nullptr;
 
-WindowsOpenGLRenderContext::WindowsOpenGLRenderContext(Surface *surface)
-    : DrawSurface(dynamic_cast<WindowsSurface*>(surface)), OpenGLContext(nullptr) {
+WindowsOpenGLRenderContext::WindowsOpenGLRenderContext(const Ref<Surface>& surface)
+    : DrawSurface(surface.As<WindowsSurface>()), OpenGLContext(nullptr) {
     if (WindowsOpenGLRenderContext::OpenGL == nullptr) {
         WindowsOpenGLRenderContext::OpenGL = LoadLibraryA("OpenGL32.dll");
 #define LOAD(name) WindowsOpenGLRenderContext::name = \
