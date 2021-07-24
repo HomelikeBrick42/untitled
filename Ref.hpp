@@ -97,8 +97,8 @@ public:
         return *this;
     }
 
-    operator bool() { return this->Instance != nullptr; }
-    operator bool() const { return this->Instance != nullptr; }
+    explicit operator bool() { return this->Instance != nullptr; }
+    explicit operator bool() const { return this->Instance != nullptr; }
 
     T* operator->() { return this->Instance; }
     const T* operator->() const { return this->Instance; }
@@ -116,7 +116,7 @@ public:
 
     void Reset(T* instance = nullptr)
     {
-        DecRef();
+        this->DefRef();
         this->Instance = instance;
     }
 
