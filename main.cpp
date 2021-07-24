@@ -26,11 +26,11 @@ private:
         this->RenderContext2 = RenderContext::Create(this->Surface2, RendererAPI::OpenGL);
         this->OpenGLContext2 = this->RenderContext2.As<OpenGLContext>();
 
-        this->Surface1->SetCloseCallback(BIND_FN(Application::SurfaceCloseCallback), nullptr);
-        this->Surface2->SetCloseCallback(BIND_FN(Application::SurfaceCloseCallback), nullptr);
+        this->Surface1->SetCloseCallback(BIND_MEMBER_FN(Application::SurfaceCloseCallback), nullptr);
+        this->Surface2->SetCloseCallback(BIND_MEMBER_FN(Application::SurfaceCloseCallback), nullptr);
 
-        this->Surface1->SetResizeCallback(BIND_FN(Application::SurfaceResizeCallback), this->OpenGLContext1.Raw());
-        this->Surface2->SetResizeCallback(BIND_FN(Application::SurfaceResizeCallback), this->OpenGLContext2.Raw());
+        this->Surface1->SetResizeCallback(BIND_MEMBER_FN(Application::SurfaceResizeCallback), this->OpenGLContext1.Raw());
+        this->Surface2->SetResizeCallback(BIND_MEMBER_FN(Application::SurfaceResizeCallback), this->OpenGLContext2.Raw());
     }
 
     void Update() {
