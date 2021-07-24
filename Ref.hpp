@@ -25,6 +25,7 @@ private:
 
 template<typename T>
 class Ref {
+    static_assert(std::is_base_of<IRef, T>::value, "Class is not ref counted!");
     template<class U>
     friend class Ref;
 public:
@@ -36,7 +37,6 @@ public:
 
     Ref(T* instance)
         : Instance(instance) {
-        static_assert(std::is_base_of<IRef, T>::value, "Class is not ref counted!");
         this->IncRef();
     }
 
