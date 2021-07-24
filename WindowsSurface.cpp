@@ -93,7 +93,7 @@ void WindowsSurface::PollEvents() {
     }
 }
 
-LRESULT WindowsSurface::StaticWindowMessageCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT WINAPI WindowsSurface::StaticWindowMessageCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     auto surface = reinterpret_cast<WindowsSurface*>(GetWindowLongPtrA(hWnd, GWLP_USERDATA));
     if (surface != nullptr) {
         return surface->WindowMessageCallback(hWnd, message, wParam, lParam);

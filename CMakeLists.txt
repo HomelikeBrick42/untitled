@@ -3,4 +3,4 @@ project(untitled)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(untitled main.cpp Defines.hpp Surface.cpp Surface.hpp WindowsSurface.cpp WindowsSurface.hpp)
+add_executable(untitled main.cpp Defines.hpp Surface.cpp Surface.hpp WindowsSurface.cpp WindowsSurface.hpp RenderContext.cpp RenderContext.hpp OpenGLRenderContext.hpp WindowsOpenGLRenderContext.cpp WindowsOpenGLRenderContext.hpp)
