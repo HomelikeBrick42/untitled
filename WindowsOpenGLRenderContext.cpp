@@ -59,6 +59,7 @@ WindowsOpenGLRenderContext::WindowsOpenGLRenderContext(Surface *surface)
     LOAD(glClearColor);
     LOAD(glClear);
     LOAD(glFlush);
+    LOAD(glViewport);
 
 #undef LOAD
 

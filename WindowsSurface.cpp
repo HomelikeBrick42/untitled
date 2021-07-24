@@ -118,6 +118,16 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
             this->CloseCallback(this, this->CloseCallbackUserData);
         } break;
 
+        case WM_SIZE: {
+            RECT clientRect = {};
+            GetClientRect(this->WindowHandle, &clientRect);
+            s32 width = clientRect.right - clientRect.left;
+            s32 height = clientRect.bottom - clientRect.top;
+            if (width > 0 && height > 0) {
+                this->ResizeCallback(this, this->ResizeCallbackUserData, static_cast<u32>(width), static_cast<u32>(height));
+            }
+        } break;
+
         default: {
             result = DefWindowProcA(hWnd, message, wParam, lParam);
         } break;

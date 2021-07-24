@@ -21,14 +21,22 @@ int main() {
     surface1->SetCloseCallback(closeCallback, &running);
     surface2->SetCloseCallback(closeCallback, &running);
 
+    auto resizeCallback = [](Surface* surface, void* userData, u32 width, u32 height) -> void {
+        auto openglContext = static_cast<OpenGLRenderContext*>(userData);
+        openglContext->glViewport(0, 0, width, height);
+    };
+
+    surface1->SetResizeCallback(resizeCallback, openglContext1);
+    surface2->SetResizeCallback(resizeCallback, openglContext2);
+
     while (running) {
-        openglContext1->glClearColor(0.1, 0.1, 0.1, 1.0);
+        openglContext1->glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
         openglContext1->glClear(GL_COLOR_BUFFER_BIT);
 
         context1->SwapBuffers();
         surface1->PollEvents();
 
-        openglContext2->glClearColor(1.0, 0.0, 0.0, 1.0);
+        openglContext2->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         openglContext2->glClear(GL_COLOR_BUFFER_BIT);
 
         context2->SwapBuffers();

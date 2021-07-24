@@ -39,7 +39,8 @@ public:
 public:
     virtual void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) = 0;
     virtual void glClear(GLenum mask) = 0;
-    virtual void glFlush(void) = 0;
+    virtual void glFlush() = 0;
+    virtual void glViewport(GLint x, GLint y, GLsizei width, GLsizei height) = 0;
 protected:
     OpenGLRenderContext() = default;
 };

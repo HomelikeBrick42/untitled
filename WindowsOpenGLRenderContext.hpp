@@ -20,14 +20,19 @@ public:
         this->ChangeContextIfNecessary();
         this->glClearFunc(mask);
     }
-    void glFlush(void) final {
+    void glFlush() final {
         this->ChangeContextIfNecessary();
         this->glFlushFunc();
+    }
+    void glViewport(GLint x, GLint y, GLsizei width, GLsizei height) final {
+        this->ChangeContextIfNecessary();
+        this->glViewportFunc(x, y, width, height);
     }
 private:
     void (APIENTRY *glClearColorFunc)(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) = nullptr;
     void (APIENTRY *glClearFunc)(GLenum mask) = nullptr;
     void (APIENTRY *glFlushFunc)(void) = nullptr;
+    void (APIENTRY *glViewportFunc)(GLint x, GLint y, GLsizei width, GLsizei height) = nullptr;
 private:
     static HGLRC (WINAPI *wglCreateContext)(HDC);
     static BOOL (WINAPI *wglDeleteContext)(HGLRC);

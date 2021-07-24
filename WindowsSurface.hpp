@@ -18,6 +18,10 @@ public:
         this->CloseCallback = callback;
         this->CloseCallbackUserData = userData;
     }
+    void SetResizeCallback(ResizeCallbackFunc* callback, void* userData) final {
+        this->ResizeCallback = callback;
+        this->ResizeCallbackUserData = userData;
+    }
 private:
     static LRESULT WINAPI StaticWindowMessageCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     LRESULT WindowMessageCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -28,6 +32,8 @@ private:
 private:
     CloseCallbackFunc* CloseCallback;
     void* CloseCallbackUserData;
+    ResizeCallbackFunc* ResizeCallback;
+    void* ResizeCallbackUserData;
 private:
     static u64 SurfaceCount;
 };
