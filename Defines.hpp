@@ -31,8 +31,12 @@ SIZE_ASSERT(f64, 8);
 
 #undef SIZE_ASSERT
 
-#if defined(_WIN32) || defined(_WIN64)
-    #define PLATFORM_WINDOWS 1
+#if defined(_WIN32)
+    #if defined(_WIN64)
+        #define PLATFORM_WINDOWS 1
+    #else
+        #error "x86 builds are not supported!"
+    #endif
 #else
     #error "Unknown platform!"
 #endif
