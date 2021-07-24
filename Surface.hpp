@@ -3,10 +3,12 @@
 #include "Defines.hpp"
 #include "Ref.hpp"
 
+#include <functional>
+
 class Surface: public IRef {
 public:
-    using CloseCallbackFunc = void(Surface* surface, void* userData);
-    using ResizeCallbackFunc = void(Surface* surface, void* userData, u32 width, u32 height);
+    using CloseCallbackFunc = std::function<void(Surface* surface, void* userData)>;
+    using ResizeCallbackFunc = std::function<void(Surface* surface, void* userData, u32 width, u32 height)>;
 public:
     static Ref<Surface> Create(u32 width, u32 height, const char* title);
     Surface(Surface&) = delete;
@@ -14,8 +16,8 @@ public:
     virtual ~Surface() = default;
 public:
     virtual void PollEvents() = 0;
-    virtual void SetCloseCallback(CloseCallbackFunc* callback, void* userData) = 0;
-    virtual void SetResizeCallback(ResizeCallbackFunc* callback, void* userData) = 0;
+    virtual void SetCloseCallback(CloseCallbackFunc callback, void* userData) = 0;
+    virtual void SetResizeCallback(ResizeCallbackFunc callback, void* userData) = 0;
 protected:
     Surface() = default;
 };

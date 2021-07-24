@@ -14,11 +14,11 @@ public:
     ~WindowsSurface() final;
 public:
     void PollEvents() final;
-    void SetCloseCallback(CloseCallbackFunc* callback, void* userData) final {
+    void SetCloseCallback(CloseCallbackFunc callback, void* userData) final {
         this->CloseCallback = callback;
         this->CloseCallbackUserData = userData;
     }
-    void SetResizeCallback(ResizeCallbackFunc* callback, void* userData) final {
+    void SetResizeCallback(ResizeCallbackFunc callback, void* userData) final {
         this->ResizeCallback = callback;
         this->ResizeCallbackUserData = userData;
     }
@@ -30,9 +30,9 @@ private:
     HWND WindowHandle;
     HDC DeviceContext;
 private:
-    CloseCallbackFunc* CloseCallback;
+    CloseCallbackFunc CloseCallback;
     void* CloseCallbackUserData;
-    ResizeCallbackFunc* ResizeCallback;
+    ResizeCallbackFunc ResizeCallback;
     void* ResizeCallbackUserData;
 private:
     static u64 SurfaceCount;

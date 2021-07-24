@@ -26,21 +26,11 @@ private:
         this->RenderContext2 = RenderContext::Create(this->Surface2, RendererAPI::OpenGL);
         this->OpenGLContext2 = this->RenderContext2.As<OpenGLContext>();
 
-        auto closeCallback = [](Surface* surface, void* userData) -> void {
-            auto running = static_cast<bool*>(userData);
-            *running = false;
-        };
+        this->Surface1->SetCloseCallback(BIND_FN(Application::SurfaceCloseCallback), nullptr);
+        this->Surface2->SetCloseCallback(BIND_FN(Application::SurfaceCloseCallback), nullptr);
 
-        this->Surface1->SetCloseCallback(closeCallback, &this->Running);
-        this->Surface2->SetCloseCallback(closeCallback, &this->Running);
-
-        auto resizeCallback = [](Surface* surface, void* userData, u32 width, u32 height) -> void {
-            auto openglContext = static_cast<OpenGLContext*>(userData);
-            openglContext->glViewport(0, 0, width, height);
-        };
-
-        this->Surface1->SetResizeCallback(resizeCallback, this->OpenGLContext1.Raw());
-        this->Surface2->SetResizeCallback(resizeCallback, this->OpenGLContext2.Raw());
+        this->Surface1->SetResizeCallback(BIND_FN(Application::SurfaceResizeCallback), this->OpenGLContext1.Raw());
+        this->Surface2->SetResizeCallback(BIND_FN(Application::SurfaceResizeCallback), this->OpenGLContext2.Raw());
     }
 
     void Update() {
@@ -63,14 +53,23 @@ private:
     void Shutdown() {
     }
 private:
+    void SurfaceCloseCallback(Surface* surface, void* userData) {
+        this->Running = false;
+    }
+
+    void SurfaceResizeCallback(Surface* surface, void* userData, u32 width, u32 height) {
+        auto openglContext = static_cast<OpenGLContext*>(userData);
+        openglContext->glViewport(0, 0, width, height);
+    }
+private:
     bool Running = true;
 private:
-    Ref<Surface> Surface1;
-    Ref<RenderContext> RenderContext1;
-    Ref<OpenGLContext> OpenGLContext1;
-    Ref<Surface> Surface2;
-    Ref<RenderContext> RenderContext2;
-    Ref<OpenGLContext> OpenGLContext2;
+    Ref<Surface> Surface1 = nullptr;
+    Ref<RenderContext> RenderContext1 = nullptr;
+    Ref<OpenGLContext> OpenGLContext1 = nullptr;
+    Ref<Surface> Surface2 = nullptr;
+    Ref<RenderContext> RenderContext2 = nullptr;
+    Ref<OpenGLContext> OpenGLContext2 = nullptr;
 };
 
 int main() {
