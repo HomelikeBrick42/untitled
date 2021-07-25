@@ -7,14 +7,14 @@
 
     #include <cstdlib>
 
-static constexpr const char *WindowClassName = "ReplaceThisWindowClassName";
+static constexpr const char* WindowClassName = "ReplaceThisWindowClassName";
 static constexpr DWORD WindowStyle =
     WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME | WS_VISIBLE;
 static constexpr DWORD WindowStyleEx = WS_EX_APPWINDOW;
 
 u64 WindowsSurface::SurfaceCount = 0;
 
-WindowsSurface::WindowsSurface(u32 width, u32 height, const char *title)
+WindowsSurface::WindowsSurface(u32 width, u32 height, const char* title)
     : Instance(GetModuleHandleA(nullptr)), WindowHandle(nullptr), DeviceContext(nullptr) {
     if (WindowsSurface::SurfaceCount == 0) {
         WNDCLASSEXA windowClass   = {};
@@ -40,9 +40,18 @@ WindowsSurface::WindowsSurface(u32 width, u32 height, const char *title)
     windowRect.bottom = windowRect.top + height;
     AdjustWindowRectEx(&windowRect, WindowStyle, false, WindowStyleEx);
 
-    this->WindowHandle = CreateWindowExA(WindowStyleEx, WindowClassName, title, WindowStyle, CW_USEDEFAULT, CW_USEDEFAULT,
-                                         windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr,
-                                         this->Instance, this);
+    this->WindowHandle = CreateWindowExA(WindowStyleEx,
+                                         WindowClassName,
+                                         title,
+                                         WindowStyle,
+                                         CW_USEDEFAULT,
+                                         CW_USEDEFAULT,
+                                         windowRect.right - windowRect.left,
+                                         windowRect.bottom - windowRect.top,
+                                         nullptr,
+                                         nullptr,
+                                         this->Instance,
+                                         this);
 
     if (this->WindowHandle == nullptr) {
         // TODO: Proper errors
@@ -86,13 +95,13 @@ void WindowsSurface::PollEvents() {
 }
 
 LRESULT WINAPI WindowsSurface::StaticWindowMessageCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-    auto surface = reinterpret_cast<WindowsSurface *>(GetWindowLongPtrA(hWnd, GWLP_USERDATA));
+    auto surface = reinterpret_cast<WindowsSurface*>(GetWindowLongPtrA(hWnd, GWLP_USERDATA));
     if (surface != nullptr) {
         return surface->WindowMessageCallback(hWnd, message, wParam, lParam);
     } else {
         if (message == WM_CREATE) {
-            auto createStruct = reinterpret_cast<CREATESTRUCT *>(lParam);
-            surface           = static_cast<WindowsSurface *>(createStruct->lpCreateParams);
+            auto createStruct = reinterpret_cast<CREATESTRUCT*>(lParam);
+            surface           = static_cast<WindowsSurface*>(createStruct->lpCreateParams);
             SetWindowLongPtrA(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(surface));
         }
 
@@ -106,23 +115,29 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
     switch (message) {
     case WM_CLOSE:
     case WM_QUIT:
-    case WM_DESTROY: {
-        this->CloseCallback(this, this->CloseCallbackUserData);
-    } break;
-
-    case WM_SIZE: {
-        RECT clientRect = {};
-        GetClientRect(this->WindowHandle, &clientRect);
-        s32 width  = clientRect.right - clientRect.left;
-        s32 height = clientRect.bottom - clientRect.top;
-        if (width > 0 && height > 0) {
-            this->ResizeCallback(this, this->ResizeCallbackUserData, static_cast<u32>(width), static_cast<u32>(height));
+    case WM_DESTROY:
+        {
+            this->CloseCallback(this, this->CloseCallbackUserData);
         }
-    } break;
+        break;
 
-    default: {
-        result = DefWindowProcA(hWnd, message, wParam, lParam);
-    } break;
+    case WM_SIZE:
+        {
+            RECT clientRect = {};
+            GetClientRect(this->WindowHandle, &clientRect);
+            s32 width  = clientRect.right - clientRect.left;
+            s32 height = clientRect.bottom - clientRect.top;
+            if (width > 0 && height > 0) {
+                this->ResizeCallback(this, this->ResizeCallbackUserData, static_cast<u32>(width), static_cast<u32>(height));
+            }
+        }
+        break;
+
+    default:
+        {
+            result = DefWindowProcA(hWnd, message, wParam, lParam);
+        }
+        break;
     }
 
     return result;

@@ -6,9 +6,9 @@
 
 class Application {
 public:
-    Application()               = default;
-    Application(Application &)  = delete;
-    Application(Application &&) = delete;
+    Application()              = default;
+    Application(Application&)  = delete;
+    Application(Application&&) = delete;
 public:
     void Run() {
         this->Init();
@@ -28,8 +28,10 @@ private:
 
         this->ColorShader = this->RenderContext->CreateShader(VertexShaderSource, FragmentShaderSource);
 
-        f32 vertices[] = {
-            +0.0f, +0.5f, 0.0f, +0.5f, -0.5f, 0.0f, -0.5f, -0.5f, 0.0f,
+        Vector3f vertices[] = {
+            { +0.0f, +0.5f, 0.0f },
+            { +0.5f, -0.5f, 0.0f },
+            { -0.5f, -0.5f, 0.0f },
         };
         this->TriangleVertexBuffer =
             this->RenderContext->CreateVertexBuffer(vertices, sizeof(vertices), { VertexBufferElement::Float3 });
@@ -52,11 +54,11 @@ private:
 
     void Shutdown() {}
 private:
-    void SurfaceCloseCallback(Surface *surface, void *userData) {
+    void SurfaceCloseCallback(Surface* surface, void* userData) {
         this->Running = false;
     }
 
-    void SurfaceResizeCallback(Surface *surface, void *userData, u32 width, u32 height) {
+    void SurfaceResizeCallback(Surface* surface, void* userData, u32 width, u32 height) {
         this->RenderContext->SetViewport(0, 0, width, height);
     }
 private:

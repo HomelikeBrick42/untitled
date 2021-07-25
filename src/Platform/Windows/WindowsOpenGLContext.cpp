@@ -5,20 +5,20 @@
     #include "WindowsOpenGLContext.hpp"
 
 HMODULE WindowsOpenGLContext::OpenGL                           = nullptr;
-HGLRC(WINAPI *WindowsOpenGLContext::wglCreateContext)(HDC)     = nullptr;
-BOOL(WINAPI *WindowsOpenGLContext::wglDeleteContext)(HGLRC)    = nullptr;
-HGLRC(WINAPI *WindowsOpenGLContext::wglGetCurrentContext)()    = nullptr;
-HDC(WINAPI *WindowsOpenGLContext::wglGetCurrentDC)()           = nullptr;
-PROC(WINAPI *WindowsOpenGLContext::wglGetProcAddress)(LPCSTR)  = nullptr;
-BOOL(WINAPI *WindowsOpenGLContext::wglMakeCurrent)(HDC, HGLRC) = nullptr;
+HGLRC(WINAPI* WindowsOpenGLContext::wglCreateContext)(HDC)     = nullptr;
+BOOL(WINAPI* WindowsOpenGLContext::wglDeleteContext)(HGLRC)    = nullptr;
+HGLRC(WINAPI* WindowsOpenGLContext::wglGetCurrentContext)()    = nullptr;
+HDC(WINAPI* WindowsOpenGLContext::wglGetCurrentDC)()           = nullptr;
+PROC(WINAPI* WindowsOpenGLContext::wglGetProcAddress)(LPCSTR)  = nullptr;
+BOOL(WINAPI* WindowsOpenGLContext::wglMakeCurrent)(HDC, HGLRC) = nullptr;
 
-WindowsOpenGLContext::WindowsOpenGLContext(const Ref<Surface> &surface)
+WindowsOpenGLContext::WindowsOpenGLContext(const Ref<Surface>& surface)
     : DrawSurface(surface.As<WindowsSurface>()), OpenGLContext(nullptr) {
     if (WindowsOpenGLContext::OpenGL == nullptr) {
         WindowsOpenGLContext::OpenGL = LoadLibraryA("OpenGL32.dll");
     #define LOAD(name)               \
         WindowsOpenGLContext::name = \
-            (decltype(WindowsOpenGLContext::name))(void *)::GetProcAddress(WindowsOpenGLContext::OpenGL, #name)
+            (decltype(WindowsOpenGLContext::name))(void*)::GetProcAddress(WindowsOpenGLContext::OpenGL, #name)
         LOAD(wglCreateContext);
         LOAD(wglDeleteContext);
         LOAD(wglGetCurrentContext);
@@ -106,11 +106,11 @@ void WindowsOpenGLContext::ChangeContextIfNecessary() {
     }
 }
 
-void *WindowsOpenGLContext::GetProcAddress(const char *name) {
-    void *func = reinterpret_cast<void *>(wglGetProcAddress(name));
-    if (func == reinterpret_cast<void *>(0) || func == reinterpret_cast<void *>(1) || func == reinterpret_cast<void *>(2) ||
-        func == reinterpret_cast<void *>(3) || func == reinterpret_cast<void *>(-1)) {
-        func = reinterpret_cast<void *>(::GetProcAddress(WindowsOpenGLContext::OpenGL, name));
+void* WindowsOpenGLContext::GetProcAddress(const char* name) {
+    void* func = reinterpret_cast<void*>(wglGetProcAddress(name));
+    if (func == reinterpret_cast<void*>(0) || func == reinterpret_cast<void*>(1) || func == reinterpret_cast<void*>(2) ||
+        func == reinterpret_cast<void*>(3) || func == reinterpret_cast<void*>(-1)) {
+        func = reinterpret_cast<void*>(::GetProcAddress(WindowsOpenGLContext::OpenGL, name));
     }
     return func;
 }
