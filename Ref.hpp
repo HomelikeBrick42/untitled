@@ -49,12 +49,14 @@ public:
     template<typename U>
     Ref(const Ref<U>& other)
         : Instance((T*)other.Instance) {
+        static_assert(std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
         this->IncRef();
     }
 
     template<typename U>
     Ref(Ref<U>&& other)
             : Instance((T*)other.Instance) {
+        static_assert(std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
         other.Instance = nullptr;
     }
 
@@ -62,15 +64,13 @@ public:
         this->DecRef();
     }
 
-    Ref& operator=(std::nullptr_t)
-    {
+    Ref& operator=(std::nullptr_t) {
         this->DecRef();
         this->Instance = nullptr;
         return *this;
     }
 
-    Ref& operator=(const Ref<T>& other)
-    {
+    Ref& operator=(const Ref<T>& other) {
         other.IncRef();
         this->DecRef();
 
@@ -79,8 +79,7 @@ public:
     }
 
     template<typename T2>
-    Ref& operator=(const Ref<T2>& other)
-    {
+    Ref& operator=(const Ref<T2>& other) {
         other.IncRef();
         this->DecRef();
 
@@ -89,8 +88,7 @@ public:
     }
 
     template<typename T2>
-    Ref& operator=(Ref<T2>&& other)
-    {
+    Ref& operator=(Ref<T2>&& other) {
         this->DecRef();
 
         this->Instance = other.Instance;
@@ -115,22 +113,20 @@ public:
         this->Instance->ZeroRefCount();
     }
 
-    void Reset(T* instance = nullptr)
-    {
+    void Reset(T* instance = nullptr) {
         this->DecRef();
         this->Instance = instance;
     }
 
     template<typename... Args>
-    static Ref<T> Create(Args&&... args)
-    {
+    static Ref<T> Create(Args&&... args) {
         return Ref<T>(new T(std::forward<Args>(args)...));
     }
 
-    template<typename T2>
-    Ref<T2> As() const
-    {
-        return Ref<T2>(*this);
+    template<typename U>
+    Ref<U> As() const {
+        static_assert(std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
+        return Ref<U>(*this);
     }
 private:
     void IncRef() {
