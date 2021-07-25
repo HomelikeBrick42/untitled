@@ -28,7 +28,6 @@ private:
 
 template<typename T>
 class Ref {
-    static_assert(std::is_base_of<IRef, T>::value, "Class is not ref counted!");
     template<class U>
     friend class Ref;
 public:
@@ -40,6 +39,7 @@ public:
 
     Ref(T* instance)
         : Instance(instance) {
+        static_assert(!is_complete<T>::value || std::is_base_of<IRef, T>::value, "Class is not ref counted!");
         this->IncRef();
     }
 
@@ -51,14 +51,14 @@ public:
     template<typename U>
     Ref(const Ref<U>& other)
         : Instance((T*)other.Instance) {
-        static_assert(std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
+        static_assert(!is_complete<T>::value || std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
         this->IncRef();
     }
 
     template<typename U>
     Ref(Ref<U>&& other)
             : Instance((T*)other.Instance) {
-        static_assert(std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
+        static_assert(!is_complete<T>::value || std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
         other.Instance = nullptr;
     }
 
@@ -127,7 +127,7 @@ public:
 
     template<typename U>
     Ref<U> As() const {
-        static_assert(std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
+        static_assert(!is_complete<T>::value || std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
         return Ref<U>(*this);
     }
 private:

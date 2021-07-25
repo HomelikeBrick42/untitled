@@ -1,5 +1,9 @@
 #include "Core/Defines.hpp"
 #include "Core/Surface.hpp"
+#include "Renderer/RenderContext.hpp"
+#include "Renderer/Shader.hpp"
+#include "Renderer/VertexBuffer.hpp"
+
 #include "Renderer/OpenGL/OpenGLContext.hpp"
 
 class Application {

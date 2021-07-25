@@ -120,6 +120,8 @@ public:
         this->ChangeContextIfNecessary();
         return this->glUseProgramFunc(program);
     }
+public:
+    Ref<Surface> GetSurface() const final { return this->DrawSurface; }
 private:
     GLenum (APIENTRY *glGetErrorFunc)() = nullptr;
     void (APIENTRY *glClearColorFunc)(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) = nullptr;

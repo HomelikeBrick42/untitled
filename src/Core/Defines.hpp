@@ -42,3 +42,15 @@ SIZE_ASSERT(f64, 8);
 #else
     #error "Unknown platform!"
 #endif
+
+template <typename T>
+char is_complete_helper(int(*)[sizeof(T)]);
+
+template <typename>
+char is_complete_helper(...);
+
+template <typename T>
+struct is_complete
+{
+    enum { value = sizeof(is_complete_helper<T>(0)) != 1 };
+};

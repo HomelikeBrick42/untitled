@@ -14,6 +14,8 @@ public:
     void UnBind() const final;
     void SetData(const void* data, u64 size) final;
     void SetLayout(const std::vector<VertexBufferElement>& layout) final;
+public:
+    Ref<RenderContext> GetContext() const final { return this->Context; }
 private:
     mutable Ref<OpenGLContext> Context = nullptr;
     GLuint VertexArrayID = 0;
