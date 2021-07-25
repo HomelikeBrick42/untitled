@@ -19,11 +19,20 @@ public:
 private:
     void Init() {
         this->Surface = Surface::Create(640, 480, "Surface");
+        this->Surface->SetCloseCallback(BIND_MEMBER_FN(Application::SurfaceCloseCallback), nullptr);
+        this->Surface->SetResizeCallback(BIND_MEMBER_FN(Application::SurfaceResizeCallback), nullptr);
+
         this->RenderContext = this->Surface->CreateRenderContext(RendererAPI::OpenGL);
         this->OpenGLRenderContext = this->RenderContext.As<OpenGLContext>();
 
-        this->Surface->SetCloseCallback(BIND_MEMBER_FN(Application::SurfaceCloseCallback), nullptr);
-        this->Surface->SetResizeCallback(BIND_MEMBER_FN(Application::SurfaceResizeCallback), nullptr);
+        f32 vertices[] = {
+                +0.0f, +0.5f, 0.0f,
+                +0.5f, -0.5f, 0.0f,
+                -0.5f, -0.5f, 0.0f,
+        };
+        this->TriangleVertexBuffer = this->RenderContext->CreateVertexBuffer(vertices, sizeof(vertices), {
+            VertexBufferElement::Float3
+        });
     }
 
     void Update() {
@@ -33,6 +42,10 @@ private:
     void Render() {
         this->OpenGLRenderContext->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         this->OpenGLRenderContext->glClear(GL_COLOR_BUFFER_BIT);
+
+        this->TriangleVertexBuffer->Bind();
+        this->OpenGLRenderContext->glDrawArrays(GL_TRIANGLE, 0, 3);
+
         this->RenderContext->Present();
     }
 
@@ -51,6 +64,7 @@ private:
 private:
     Ref<Surface> Surface = nullptr;
     Ref<RenderContext> RenderContext = nullptr;
+    Ref<VertexBuffer> TriangleVertexBuffer = nullptr;
     Ref<OpenGLContext> OpenGLRenderContext = nullptr;
 };
 

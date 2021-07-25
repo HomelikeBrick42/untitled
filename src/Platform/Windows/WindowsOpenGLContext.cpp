@@ -56,10 +56,21 @@ WindowsOpenGLContext::WindowsOpenGLContext(const Ref<Surface>& surface)
 #define LOAD(name) \
     this->name ## Func = reinterpret_cast<decltype(this->name ## Func)>(WindowsOpenGLContext::GetProcAddress(#name))
 
+    LOAD(glGetError);
     LOAD(glClearColor);
     LOAD(glClear);
     LOAD(glFlush);
     LOAD(glViewport);
+    LOAD(glDrawArrays);
+    LOAD(glGenBuffers);
+    LOAD(glDeleteBuffers);
+    LOAD(glBindBuffer);
+    LOAD(glBufferData);
+    LOAD(glGenVertexArrays);
+    LOAD(glDeleteVertexArrays);
+    LOAD(glBindVertexArray);
+    LOAD(glEnableVertexAttribArray);
+    LOAD(glVertexAttribPointer);
 
 #undef LOAD
 

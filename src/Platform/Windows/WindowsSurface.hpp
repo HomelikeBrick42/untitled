@@ -28,14 +28,14 @@ private:
     static LRESULT WINAPI StaticWindowMessageCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     LRESULT WindowMessageCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 private:
-    HINSTANCE Instance;
-    HWND WindowHandle;
-    HDC DeviceContext;
+    HINSTANCE Instance = nullptr;
+    HWND WindowHandle = nullptr;
+    HDC DeviceContext = nullptr;
 private:
-    CloseCallbackFunc CloseCallback;
-    void* CloseCallbackUserData;
-    ResizeCallbackFunc ResizeCallback;
-    void* ResizeCallbackUserData;
+    CloseCallbackFunc CloseCallback = nullptr;
+    void* CloseCallbackUserData = nullptr;
+    ResizeCallbackFunc ResizeCallback = nullptr;
+    void* ResizeCallbackUserData = nullptr;
 private:
     static u64 SurfaceCount;
 };
