@@ -22,6 +22,7 @@ public:
     u64 GetRefCount() const {
         return this->RefCount;
     }
+
 private:
     mutable u64 RefCount = 0;
 };
@@ -30,35 +31,32 @@ template<typename T>
 class Ref {
     template<class U>
     friend class Ref;
+
 public:
-    Ref()
-        : Instance(nullptr) {}
+    Ref() : Instance(nullptr) {}
 
-    Ref(std::nullptr_t n)
-        : Instance(nullptr) {}
+    Ref(std::nullptr_t n) : Instance(nullptr) {}
 
-    Ref(T* instance)
-        : Instance(instance) {
+    Ref(T *instance) : Instance(instance) {
         static_assert(!is_complete<T>::value || std::is_base_of<IRef, T>::value, "Class is not ref counted!");
         this->IncRef();
     }
 
-    Ref(const Ref<T>& other)
-        : Instance(other.Instance) {
+    Ref(const Ref<T> &other) : Instance(other.Instance) {
         this->IncRef();
     }
 
     template<typename U>
-    Ref(const Ref<U>& other)
-        : Instance((T*)other.Instance) {
-        static_assert(!is_complete<T>::value || std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
+    Ref(const Ref<U> &other) : Instance((T *)other.Instance) {
+        static_assert(!is_complete<T>::value || std::is_base_of<U, T>::value || std::is_base_of<T, U>::value,
+                      "Invalid conversion");
         this->IncRef();
     }
 
     template<typename U>
-    Ref(Ref<U>&& other)
-            : Instance((T*)other.Instance) {
-        static_assert(!is_complete<T>::value || std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
+    Ref(Ref<U> &&other) : Instance((T *)other.Instance) {
+        static_assert(!is_complete<T>::value || std::is_base_of<U, T>::value || std::is_base_of<T, U>::value,
+                      "Invalid conversion");
         other.Instance = nullptr;
     }
 
@@ -66,13 +64,13 @@ public:
         this->DecRef();
     }
 
-    Ref& operator=(std::nullptr_t) {
+    Ref &operator=(std::nullptr_t) {
         this->DecRef();
         this->Instance = nullptr;
         return *this;
     }
 
-    Ref& operator=(const Ref<T>& other) {
+    Ref &operator=(const Ref<T> &other) {
         other.IncRef();
         this->DecRef();
 
@@ -81,7 +79,7 @@ public:
     }
 
     template<typename T2>
-    Ref& operator=(const Ref<T2>& other) {
+    Ref &operator=(const Ref<T2> &other) {
         other.IncRef();
         this->DecRef();
 
@@ -90,7 +88,7 @@ public:
     }
 
     template<typename T2>
-    Ref& operator=(Ref<T2>&& other) {
+    Ref &operator=(Ref<T2> &&other) {
         this->DecRef();
 
         this->Instance = other.Instance;
@@ -98,38 +96,56 @@ public:
         return *this;
     }
 
-    explicit operator bool() { return this->Instance != nullptr; }
-    explicit operator bool() const { return this->Instance != nullptr; }
+    explicit operator bool() {
+        return this->Instance != nullptr;
+    }
+    explicit operator bool() const {
+        return this->Instance != nullptr;
+    }
 
-    T* operator->() { return this->Instance; }
-    const T* operator->() const { return this->Instance; }
+    T *operator->() {
+        return this->Instance;
+    }
+    const T *operator->() const {
+        return this->Instance;
+    }
 
-    T& operator*() { return *this->Instance; }
-    const T& operator*() const { return *this->Instance; }
+    T &operator*() {
+        return *this->Instance;
+    }
+    const T &operator*() const {
+        return *this->Instance;
+    }
 
-    T* Raw() { return this->Instance; }
-    const T* Raw() const { return this->Instance; }
+    T *Raw() {
+        return this->Instance;
+    }
+    const T *Raw() const {
+        return this->Instance;
+    }
 
     void Release() {
         delete this->Instance;
         this->Instance->ZeroRefCount();
     }
 
-    void Reset(T* instance = nullptr) {
+    void Reset(T *instance = nullptr) {
         this->DecRef();
         this->Instance = instance;
     }
 
     template<typename... Args>
-    static Ref<T> Create(Args&&... args) {
+    static Ref<T> Create(Args &&...args) {
         return Ref<T>(new T(std::forward<Args>(args)...));
     }
 
     template<typename U>
     Ref<U> As() const {
-        static_assert(!is_complete<T>::value || std::is_base_of<U, T>::value || std::is_base_of<T, U>::value, "Invalid conversion");
+        static_assert(!is_complete<T>::value || std::is_base_of<U, T>::value || std::is_base_of<T, U>::value,
+                      "Invalid conversion");
         return Ref<U>(*this);
     }
+
 private:
     void IncRef() {
         if (this->Instance) {
@@ -146,6 +162,7 @@ private:
             }
         }
     }
+
 private:
-    T* Instance = nullptr;
+    T *Instance = nullptr;
 };

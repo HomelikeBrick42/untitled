@@ -5,18 +5,24 @@
 
 class OpenGLShader final: public Shader {
 public:
-    OpenGLShader(const Ref<OpenGLContext>& context, const String& vertexSource, const String& fragmentSource);
-    OpenGLShader(Shader&) = delete;
-    OpenGLShader(Shader&&) = delete;
+    OpenGLShader(const Ref<OpenGLContext> &context, const String &vertexSource, const String &fragmentSource);
+    OpenGLShader(Shader &)  = delete;
+    OpenGLShader(Shader &&) = delete;
     ~OpenGLShader() final;
+
 public:
     void Bind() const final;
     void UnBind() const final;
+
 private:
-    GLuint CreateShader(GLenum type, const String& source);
+    GLuint CreateShader(GLenum type, const String &source);
+
 public:
-    Ref<RenderContext> GetContext() const final { return this->Context; }
+    Ref<RenderContext> GetContext() const final {
+        return this->Context;
+    }
+
 private:
     mutable Ref<OpenGLContext> Context = nullptr;
-    GLuint ID = 0;
+    GLuint ID                          = 0;
 };

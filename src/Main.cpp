@@ -6,9 +6,10 @@
 
 class Application {
 public:
-    Application() = default;
-    Application(Application&) = delete;
-    Application(Application&&) = delete;
+    Application()               = default;
+    Application(Application &)  = delete;
+    Application(Application &&) = delete;
+
 public:
     void Run() {
         this->Init();
@@ -18,6 +19,7 @@ public:
         }
         this->Shutdown();
     }
+
 private:
     void Init() {
         this->Surface = Surface::Create(640, 480, "Surface");
@@ -29,13 +31,10 @@ private:
         this->ColorShader = this->RenderContext->CreateShader(VertexShaderSource, FragmentShaderSource);
 
         f32 vertices[] = {
-                +0.0f, +0.5f, 0.0f,
-                +0.5f, -0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
+            +0.0f, +0.5f, 0.0f, +0.5f, -0.5f, 0.0f, -0.5f, -0.5f, 0.0f,
         };
-        this->TriangleVertexBuffer = this->RenderContext->CreateVertexBuffer(vertices, sizeof(vertices), {
-            VertexBufferElement::Float3
-        });
+        this->TriangleVertexBuffer =
+            this->RenderContext->CreateVertexBuffer(vertices, sizeof(vertices), { VertexBufferElement::Float3 });
     }
 
     void Update() {
@@ -53,25 +52,28 @@ private:
         this->RenderContext->Present();
     }
 
-    void Shutdown() {
-    }
+    void Shutdown() {}
+
 private:
-    void SurfaceCloseCallback(Surface* surface, void* userData) {
+    void SurfaceCloseCallback(Surface *surface, void *userData) {
         this->Running = false;
     }
 
-    void SurfaceResizeCallback(Surface* surface, void* userData, u32 width, u32 height) {
+    void SurfaceResizeCallback(Surface *surface, void *userData, u32 width, u32 height) {
         this->RenderContext->SetViewport(0, 0, width, height);
     }
+
 private:
     bool Running = true;
+
 private:
-    Ref<Surface> Surface = nullptr;
-    Ref<RenderContext> RenderContext = nullptr;
-    Ref<Shader> ColorShader = nullptr;
+    Ref<Surface> Surface                   = nullptr;
+    Ref<RenderContext> RenderContext       = nullptr;
+    Ref<Shader> ColorShader                = nullptr;
     Ref<VertexBuffer> TriangleVertexBuffer = nullptr;
+
 private:
-    const String VertexShaderSource = R"(
+    const String VertexShaderSource   = R"(
 #version 440 core
 
 layout(location = 0) in vec4 a_Position;
@@ -80,7 +82,7 @@ void main() {
     gl_Position = a_Position;
 }
 )";
-    const String FragmentShaderSource  = R"(
+    const String FragmentShaderSource = R"(
 #version 440 core
 
 layout(location = 0) out vec4 o_Color;

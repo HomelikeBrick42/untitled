@@ -17,14 +17,11 @@ struct Vector3 {
         };
     };
 
-    Vector3()
-        : x(T()), y(T()), z(T()) {}
+    Vector3() : x(T()), y(T()), z(T()) {}
 
-    Vector3(T scalar)
-        : x(scalar), y(scalar), z(scalar) {}
+    Vector3(T scalar) : x(scalar), y(scalar), z(scalar) {}
 
-    Vector3(T x, T y, T z)
-        : x(x), y(y), z(y) {}
+    Vector3(T x, T y, T z) : x(x), y(y), z(y) {}
 };
 
 using Vector3f = Vector3<f32>;
