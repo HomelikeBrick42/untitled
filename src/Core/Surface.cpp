@@ -1,7 +1,7 @@
 #include "Surface.hpp"
 
 #if PLATFORM_WINDOWS
-    #include "WindowsSurface.hpp"
+    #include "Platform/Windows/WindowsSurface.hpp"
 #endif
 
 Ref<Surface> Surface::Create(u32 width, u32 height, const char *title) {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Core/Defines.hpp"
+
 #include <type_traits>
 #include <utility>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Defines.hpp"
-#include "Ref.hpp"
+#include "Core/Defines.hpp"
+#include "Core/Ref.hpp"
 
 enum class RendererAPI {
     OpenGL,

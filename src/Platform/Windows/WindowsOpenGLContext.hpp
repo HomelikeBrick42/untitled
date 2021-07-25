@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLContext.hpp"
+#include "Renderer/OpenGL/OpenGLContext.hpp"
 #include "WindowsSurface.hpp"
 
 class WindowsOpenGLContext final: public OpenGLContext {

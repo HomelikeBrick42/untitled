@@ -1,6 +1,6 @@
-#include "Defines.hpp"
-#include "Surface.hpp"
-#include "OpenGLContext.hpp"
+#include "Core/Defines.hpp"
+#include "Core/Surface.hpp"
+#include "Renderer/OpenGL/OpenGLContext.hpp"
 
 class Application {
 public:

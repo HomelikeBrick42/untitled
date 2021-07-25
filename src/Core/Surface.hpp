@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Defines.hpp"
-#include "Ref.hpp"
-#include "RenderContext.hpp"
+#include "Core/Defines.hpp"
+#include "Core/Ref.hpp"
+#include "Renderer/RenderContext.hpp"
 
 #include <functional>
 

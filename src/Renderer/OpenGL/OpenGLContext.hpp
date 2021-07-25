@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderContext.hpp"
+#include "Renderer/RenderContext.hpp"
 
 using GLchar = char;
 using GLboolean = bool;
