@@ -50,7 +50,6 @@ template <typename>
 char is_complete_(...);
 
 template <typename T>
-struct is_complete
-{
+struct is_complete {
     enum { value = sizeof(is_complete_<T>(0)) != 1 };
 };
