@@ -44,13 +44,13 @@ SIZE_ASSERT(f64, 8);
 #endif
 
 template <typename T>
-char is_complete_helper(int(*)[sizeof(T)]);
+char is_complete_(int(*)[sizeof(T)]);
 
 template <typename>
-char is_complete_helper(...);
+char is_complete_(...);
 
 template <typename T>
 struct is_complete
 {
-    enum { value = sizeof(is_complete_helper<T>(0)) != 1 };
+    enum { value = sizeof(is_complete_<T>(0)) != 1 };
 };
