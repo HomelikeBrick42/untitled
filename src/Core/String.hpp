@@ -3,7 +3,7 @@
 #include "Defines.hpp"
 #include "Ref.hpp"
 
-class String: public IRef {
+class String final: public IRef {
 public:
     String();
     String(const char* cstring);
