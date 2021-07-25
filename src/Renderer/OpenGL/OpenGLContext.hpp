@@ -57,10 +57,10 @@ public:
     Ref<Shader> CreateShader(const String& vertexSource, const String& fragmentSource) final;
     Ref<VertexBuffer> CreateVertexBuffer(const void* data, u64 size, const std::vector<VertexBufferElement>& layout) final;
 public:
-    void SetClearColor(const Vector3f& color) final { this->glClearColor(color.r, color.g, color.b, 1.0f); }
-    void Clear() final { this->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); }
-    void Draw(u32 first, u32 count) final { this->glDrawArrays(GL_TRIANGLES, (GLint)first, count); }
-    void SetViewport(u32 x, u32 y, u32 width, u32 height) final { this->glViewport((GLint)x, (GLint)y, width, height); }
+    void SetClearColor(const Vector3f& color) final;
+    void Clear() final;
+    void Draw(u32 first, u32 count) final;
+    void SetViewport(u32 x, u32 y, u32 width, u32 height) final;
 public:
     virtual GLenum glGetError() = 0;
     virtual void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) = 0;
