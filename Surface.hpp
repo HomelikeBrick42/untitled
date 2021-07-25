@@ -2,6 +2,7 @@
 
 #include "Defines.hpp"
 #include "Ref.hpp"
+#include "RenderContext.hpp"
 
 #include <functional>
 
@@ -18,6 +19,8 @@ public:
     virtual void PollEvents() = 0;
     virtual void SetCloseCallback(CloseCallbackFunc callback, void* userData) = 0;
     virtual void SetResizeCallback(ResizeCallbackFunc callback, void* userData) = 0;
+public:
+    virtual Ref<RenderContext> CreateRenderContext(RendererAPI api) = 0;
 protected:
     Surface() = default;
 };

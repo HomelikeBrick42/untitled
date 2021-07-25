@@ -22,6 +22,8 @@ public:
         this->ResizeCallback = callback;
         this->ResizeCallbackUserData = userData;
     }
+public:
+    Ref<RenderContext> CreateRenderContext(RendererAPI api) final;
 private:
     static LRESULT WINAPI StaticWindowMessageCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     LRESULT WindowMessageCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

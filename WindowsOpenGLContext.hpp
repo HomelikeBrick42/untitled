@@ -31,13 +31,13 @@ public:
 private:
     void (APIENTRY *glClearColorFunc)(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) = nullptr;
     void (APIENTRY *glClearFunc)(GLenum mask) = nullptr;
-    void (APIENTRY *glFlushFunc)(void) = nullptr;
+    void (APIENTRY *glFlushFunc)() = nullptr;
     void (APIENTRY *glViewportFunc)(GLint x, GLint y, GLsizei width, GLsizei height) = nullptr;
 private:
     static HGLRC (WINAPI *wglCreateContext)(HDC);
     static BOOL (WINAPI *wglDeleteContext)(HGLRC);
-    static HGLRC (WINAPI *wglGetCurrentContext)(void);
-    static HDC (WINAPI *wglGetCurrentDC)(void);
+    static HGLRC (WINAPI *wglGetCurrentContext)();
+    static HDC (WINAPI *wglGetCurrentDC)();
     static PROC (WINAPI *wglGetProcAddress)(LPCSTR);
     static BOOL (WINAPI *wglMakeCurrent)(HDC, HGLRC);
 private:

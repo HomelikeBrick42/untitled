@@ -19,7 +19,7 @@ public:
 private:
     void Init() {
         this->Surface = Surface::Create(640, 480, "Surface");
-        this->RenderContext = RenderContext::Create(this->Surface, RendererAPI::OpenGL);
+        this->RenderContext = this->Surface->CreateRenderContext(RendererAPI::OpenGL);
         this->OpenGLRenderContext = this->RenderContext.As<OpenGLContext>();
 
         this->Surface->SetCloseCallback(BIND_MEMBER_FN(Application::SurfaceCloseCallback), nullptr);

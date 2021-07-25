@@ -3,6 +3,7 @@
 #if PLATFORM_WINDOWS
 
 #include "WindowsSurface.hpp"
+#include "WindowsOpenGLContext.hpp"
 
 #include <cstdlib>
 
@@ -134,6 +135,17 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
     }
 
     return result;
+}
+
+Ref<RenderContext> WindowsSurface::CreateRenderContext(RendererAPI api) {
+    switch (api) {
+        case RendererAPI::OpenGL:
+            return Ref<WindowsOpenGLContext>::Create(this);
+
+        default:
+            return nullptr;
+    }
+    return nullptr;
 }
 
 #endif

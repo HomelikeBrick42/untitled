@@ -7,8 +7,8 @@
 HMODULE WindowsOpenGLContext::OpenGL = nullptr;
 HGLRC (WINAPI *WindowsOpenGLContext::wglCreateContext)(HDC) = nullptr;
 BOOL (WINAPI *WindowsOpenGLContext::wglDeleteContext)(HGLRC) = nullptr;
-HGLRC (WINAPI *WindowsOpenGLContext::wglGetCurrentContext)(void) = nullptr;
-HDC (WINAPI *WindowsOpenGLContext::wglGetCurrentDC)(void) = nullptr;
+HGLRC (WINAPI *WindowsOpenGLContext::wglGetCurrentContext)() = nullptr;
+HDC (WINAPI *WindowsOpenGLContext::wglGetCurrentDC)() = nullptr;
 PROC (WINAPI *WindowsOpenGLContext::wglGetProcAddress)(LPCSTR) = nullptr;
 BOOL (WINAPI *WindowsOpenGLContext::wglMakeCurrent)(HDC, HGLRC) = nullptr;
 
