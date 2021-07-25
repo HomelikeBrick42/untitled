@@ -18,36 +18,22 @@ public:
     }
 private:
     void Init() {
-        this->Surface1 = Surface::Create(640, 480, "Surface 1");
-        this->RenderContext1 = RenderContext::Create(this->Surface1, RendererAPI::OpenGL);
-        this->OpenGLContext1 = this->RenderContext1.As<OpenGLContext>();
+        this->Surface = Surface::Create(640, 480, "Surface");
+        this->RenderContext = RenderContext::Create(this->Surface, RendererAPI::OpenGL);
+        this->OpenGLRenderContext = this->RenderContext.As<OpenGLContext>();
 
-        this->Surface2 = Surface::Create(640, 480, "Surface 2");
-        this->RenderContext2 = RenderContext::Create(this->Surface2, RendererAPI::OpenGL);
-        this->OpenGLContext2 = this->RenderContext2.As<OpenGLContext>();
-
-        this->Surface1->SetCloseCallback(BIND_MEMBER_FN(Application::SurfaceCloseCallback), nullptr);
-        this->Surface2->SetCloseCallback(BIND_MEMBER_FN(Application::SurfaceCloseCallback), nullptr);
-
-        this->Surface1->SetResizeCallback(BIND_MEMBER_FN(Application::SurfaceResizeCallback), this->OpenGLContext1.Raw());
-        this->Surface2->SetResizeCallback(BIND_MEMBER_FN(Application::SurfaceResizeCallback), this->OpenGLContext2.Raw());
+        this->Surface->SetCloseCallback(BIND_MEMBER_FN(Application::SurfaceCloseCallback), nullptr);
+        this->Surface->SetResizeCallback(BIND_MEMBER_FN(Application::SurfaceResizeCallback), nullptr);
     }
 
     void Update() {
-        this->Surface1->PollEvents();
-        this->Surface2->PollEvents();
+        this->Surface->PollEvents();
     }
 
     void Render() {
-        this->OpenGLContext1->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-        this->OpenGLContext1->glClear(GL_COLOR_BUFFER_BIT);
-
-        this->RenderContext1->Present();
-
-        this->OpenGLContext2->glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-        this->OpenGLContext2->glClear(GL_COLOR_BUFFER_BIT);
-
-        this->RenderContext2->Present();
+        this->OpenGLRenderContext->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        this->OpenGLRenderContext->glClear(GL_COLOR_BUFFER_BIT);
+        this->RenderContext->Present();
     }
 
     void Shutdown() {
@@ -58,18 +44,14 @@ private:
     }
 
     void SurfaceResizeCallback(Surface* surface, void* userData, u32 width, u32 height) {
-        auto openglContext = static_cast<OpenGLContext*>(userData);
-        openglContext->glViewport(0, 0, width, height);
+        this->OpenGLRenderContext->glViewport(0, 0, width, height);
     }
 private:
     bool Running = true;
 private:
-    Ref<Surface> Surface1 = nullptr;
-    Ref<RenderContext> RenderContext1 = nullptr;
-    Ref<OpenGLContext> OpenGLContext1 = nullptr;
-    Ref<Surface> Surface2 = nullptr;
-    Ref<RenderContext> RenderContext2 = nullptr;
-    Ref<OpenGLContext> OpenGLContext2 = nullptr;
+    Ref<Surface> Surface = nullptr;
+    Ref<RenderContext> RenderContext = nullptr;
+    Ref<OpenGLContext> OpenGLRenderContext = nullptr;
 };
 
 int main() {
