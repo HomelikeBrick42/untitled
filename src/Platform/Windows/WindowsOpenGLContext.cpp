@@ -17,8 +17,8 @@ WindowsOpenGLContext::WindowsOpenGLContext(const Ref<Surface>& surface)
     if (WindowsOpenGLContext::OpenGL == nullptr) {
         WindowsOpenGLContext::OpenGL = LoadLibraryA("OpenGL32.dll");
 #define LOAD(name) WindowsOpenGLContext::name = \
-                    reinterpret_cast<decltype(WindowsOpenGLContext::name)>( \
-                        ::GetProcAddress(WindowsOpenGLContext::OpenGL, #name))
+                    (decltype(WindowsOpenGLContext::name)) \
+                        (void*)::GetProcAddress(WindowsOpenGLContext::OpenGL, #name)
         LOAD(wglCreateContext);
         LOAD(wglDeleteContext);
         LOAD(wglGetCurrentContext);
