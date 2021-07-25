@@ -4,8 +4,6 @@
 #include "Renderer/Shader.hpp"
 #include "Renderer/VertexBuffer.hpp"
 
-#include "Renderer/OpenGL/OpenGLContext.hpp"
-
 class Application {
 public:
     Application() = default;
@@ -27,7 +25,6 @@ private:
         this->Surface->SetResizeCallback(BIND_MEMBER_FN(Application::SurfaceResizeCallback), nullptr);
 
         this->RenderContext = this->Surface->CreateRenderContext(RendererAPI::OpenGL);
-        this->OpenGLRenderContext = this->RenderContext.As<OpenGLContext>();
 
         this->ColorShader = this->RenderContext->CreateShader(VertexShaderSource, FragmentShaderSource);
 
@@ -46,12 +43,12 @@ private:
     }
 
     void Render() {
-        this->OpenGLRenderContext->glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        this->OpenGLRenderContext->glClear(GL_COLOR_BUFFER_BIT);
+        this->RenderContext->SetClearColor({ 0.1f, 0.1f, 0.1f });
+        this->RenderContext->Clear();
 
         this->ColorShader->Bind();
         this->TriangleVertexBuffer->Bind();
-        this->OpenGLRenderContext->glDrawArrays(GL_TRIANGLE, 0, 3);
+        this->RenderContext->Draw(0, 3);
 
         this->RenderContext->Present();
     }
@@ -64,7 +61,7 @@ private:
     }
 
     void SurfaceResizeCallback(Surface* surface, void* userData, u32 width, u32 height) {
-        this->OpenGLRenderContext->glViewport(0, 0, width, height);
+        this->RenderContext->SetViewport(0, 0, width, height);
     }
 private:
     bool Running = true;
@@ -73,7 +70,6 @@ private:
     Ref<RenderContext> RenderContext = nullptr;
     Ref<Shader> ColorShader = nullptr;
     Ref<VertexBuffer> TriangleVertexBuffer = nullptr;
-    Ref<OpenGLContext> OpenGLRenderContext = nullptr;
 private:
     const String VertexShaderSource = R"(
 #version 440 core
