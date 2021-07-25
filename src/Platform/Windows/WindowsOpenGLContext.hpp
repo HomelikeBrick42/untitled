@@ -9,10 +9,8 @@ public:
     WindowsOpenGLContext(WindowsOpenGLContext &)  = delete;
     WindowsOpenGLContext(WindowsOpenGLContext &&) = delete;
     ~WindowsOpenGLContext() final;
-
 public:
     void Present() final;
-
 public:
     GLenum glGetError() final {
         this->ChangeContextIfNecessary();
@@ -123,12 +121,10 @@ public:
         this->ChangeContextIfNecessary();
         return this->glUseProgramFunc(program);
     }
-
 public:
     Ref<Surface> GetSurface() const final {
         return this->DrawSurface;
     }
-
 private:
     GLenum(APIENTRY *glGetErrorFunc)()                                                                           = nullptr;
     void(APIENTRY *glClearColorFunc)(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)                    = nullptr;
@@ -158,7 +154,6 @@ private:
     void(APIENTRY *glLinkProgramFunc)(GLuint program)                                                            = nullptr;
     void(APIENTRY *glGetProgramivFunc)(GLuint program, GLenum pname, GLint *params)                              = nullptr;
     void(APIENTRY *glUseProgramFunc)(GLuint program)                                                             = nullptr;
-
 private:
     static HGLRC(WINAPI *wglCreateContext)(HDC);
     static BOOL(WINAPI *wglDeleteContext)(HGLRC);
@@ -166,15 +161,12 @@ private:
     static HDC(WINAPI *wglGetCurrentDC)();
     static PROC(WINAPI *wglGetProcAddress)(LPCSTR);
     static BOOL(WINAPI *wglMakeCurrent)(HDC, HGLRC);
-
 private:
     void ChangeContextIfNecessary();
     static void *GetProcAddress(const char *name);
-
 private:
     Ref<WindowsSurface> DrawSurface;
     HGLRC OpenGLContext;
-
 private:
     static HMODULE OpenGL;
 };

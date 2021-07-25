@@ -53,17 +53,14 @@ public:
     OpenGLContext(OpenGLContext &)  = delete;
     OpenGLContext(OpenGLContext &&) = delete;
     ~OpenGLContext() override       = default;
-
 public:
     Ref<Shader> CreateShader(const String &vertexSource, const String &fragmentSource) final;
     Ref<VertexBuffer> CreateVertexBuffer(const void *data, u64 size, const std::vector<VertexBufferElement> &layout) final;
-
 public:
     void SetClearColor(const Vector3f &color) final;
     void Clear() final;
     void Draw(u32 first, u32 count) final;
     void SetViewport(u32 x, u32 y, u32 width, u32 height) final;
-
 public:
     virtual GLenum glGetError()                                                                           = 0;
     virtual void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha)                    = 0;
@@ -93,7 +90,6 @@ public:
     virtual void glLinkProgram(GLuint program)                                                            = 0;
     virtual void glGetProgramiv(GLuint program, GLenum pname, GLint *params)                              = 0;
     virtual void glUseProgram(GLuint program)                                                             = 0;
-
 protected:
     OpenGLContext() = default;
 };

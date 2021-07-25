@@ -22,7 +22,6 @@ public:
     u64 GetRefCount() const {
         return this->RefCount;
     }
-
 private:
     mutable u64 RefCount = 0;
 };
@@ -31,7 +30,6 @@ template<typename T>
 class Ref {
     template<class U>
     friend class Ref;
-
 public:
     Ref() : Instance(nullptr) {}
 
@@ -145,7 +143,6 @@ public:
                       "Invalid conversion");
         return Ref<U>(*this);
     }
-
 private:
     void IncRef() {
         if (this->Instance) {
@@ -162,7 +159,6 @@ private:
             }
         }
     }
-
 private:
     T *Instance = nullptr;
 };

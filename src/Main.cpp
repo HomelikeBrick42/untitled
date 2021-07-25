@@ -9,7 +9,6 @@ public:
     Application()               = default;
     Application(Application &)  = delete;
     Application(Application &&) = delete;
-
 public:
     void Run() {
         this->Init();
@@ -19,7 +18,6 @@ public:
         }
         this->Shutdown();
     }
-
 private:
     void Init() {
         this->Surface = Surface::Create(640, 480, "Surface");
@@ -53,7 +51,6 @@ private:
     }
 
     void Shutdown() {}
-
 private:
     void SurfaceCloseCallback(Surface *surface, void *userData) {
         this->Running = false;
@@ -62,16 +59,13 @@ private:
     void SurfaceResizeCallback(Surface *surface, void *userData, u32 width, u32 height) {
         this->RenderContext->SetViewport(0, 0, width, height);
     }
-
 private:
     bool Running = true;
-
 private:
     Ref<Surface> Surface                   = nullptr;
     Ref<RenderContext> RenderContext       = nullptr;
     Ref<Shader> ColorShader                = nullptr;
     Ref<VertexBuffer> TriangleVertexBuffer = nullptr;
-
 private:
     const String VertexShaderSource   = R"(
 #version 440 core
