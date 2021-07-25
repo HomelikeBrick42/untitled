@@ -18,10 +18,10 @@ public:
     VertexBuffer(VertexBuffer&&) = delete;
     virtual ~VertexBuffer() = default;
 public:
-    virtual void Bind() = 0;
-    virtual void UnBind() = 0;
+    virtual void Bind() const = 0;
+    virtual void UnBind() const = 0;
     virtual void SetData(const void* data, u64 size) = 0;
-    virtual void SetLayout(const std::vector<VertexBufferElement>& elements) = 0;
+    virtual void SetLayout(const std::vector<VertexBufferElement>& layout) = 0;
 protected:
     VertexBuffer() = default;
 };

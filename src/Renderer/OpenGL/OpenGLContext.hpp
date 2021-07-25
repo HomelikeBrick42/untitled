@@ -41,13 +41,21 @@ constexpr GLenum GL_TRIANGLE = 4;
 
 constexpr GLenum GL_FLOAT = 5126;
 
+constexpr GLenum GL_VERTEX_SHADER = 35633;
+constexpr GLenum GL_FRAGMENT_SHADER = 35632;
+
+constexpr GLenum GL_LINK_STATUS = 35714;
+constexpr GLenum GL_COMPILE_STATUS = 35713;
+constexpr GLenum GL_INFO_LOG_LENGTH = 35716;
+
 class OpenGLContext: public RenderContext {
 public:
     OpenGLContext(OpenGLContext&) = delete;
     OpenGLContext(OpenGLContext&&) = delete;
     ~OpenGLContext() override = default;
 public:
-    Ref<VertexBuffer> CreateVertexBuffer(const void* data, u64 size, const std::vector<VertexBufferElement>& elements) final;
+    Ref<Shader> CreateShader(const String& vertexSource, const String& fragmentSource) final;
+    Ref<VertexBuffer> CreateVertexBuffer(const void* data, u64 size, const std::vector<VertexBufferElement>& layout) final;
 public:
     virtual GLenum glGetError() = 0;
     virtual void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) = 0;
@@ -64,6 +72,18 @@ public:
     virtual void glBindVertexArray(GLuint array) = 0;
     virtual void glEnableVertexAttribArray(GLuint index) = 0;
     virtual void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer) = 0;
+    virtual GLuint glCreateShader(GLenum shaderType) = 0;
+    virtual void glDeleteShader(GLuint shader) = 0;
+    virtual void glShaderSource(GLuint shader, GLsizei count, const GLchar** string, const GLint* length) = 0;
+    virtual void glCompileShader(GLuint shader) = 0;
+    virtual void glGetShaderiv(GLuint shader, GLenum pname, GLint* params) = 0;
+    virtual GLuint glCreateProgram() = 0;
+    virtual void glDeleteProgram(GLuint program) = 0;
+    virtual void glAttachShader(GLuint program, GLuint shader) = 0;
+    virtual void glDetachShader(GLuint program, GLuint shader) = 0;
+    virtual void glLinkProgram(GLuint program) = 0;
+    virtual void glGetProgramiv(GLuint program, GLenum pname, GLint* params) = 0;
+    virtual void glUseProgram(GLuint program) = 0;
 protected:
     OpenGLContext() = default;
 };

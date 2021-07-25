@@ -71,6 +71,18 @@ WindowsOpenGLContext::WindowsOpenGLContext(const Ref<Surface>& surface)
     LOAD(glBindVertexArray);
     LOAD(glEnableVertexAttribArray);
     LOAD(glVertexAttribPointer);
+    LOAD(glCreateShader);
+    LOAD(glDeleteShader);
+    LOAD(glShaderSource);
+    LOAD(glCompileShader);
+    LOAD(glGetShaderiv);
+    LOAD(glCreateProgram);
+    LOAD(glDeleteProgram);
+    LOAD(glAttachShader);
+    LOAD(glDetachShader);
+    LOAD(glLinkProgram);
+    LOAD(glGetProgramiv);
+    LOAD(glUseProgram);
 
 #undef LOAD
 

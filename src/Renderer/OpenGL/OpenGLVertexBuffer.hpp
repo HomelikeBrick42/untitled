@@ -10,12 +10,12 @@ public:
     OpenGLVertexBuffer(OpenGLVertexBuffer&&) = delete;
     ~OpenGLVertexBuffer() override;
 public:
-    void Bind() final;
-    void UnBind() final;
+    void Bind() const final;
+    void UnBind() const final;
     void SetData(const void* data, u64 size) final;
-    void SetLayout(const std::vector<VertexBufferElement>& elements) final;
+    void SetLayout(const std::vector<VertexBufferElement>& layout) final;
 private:
-    Ref<OpenGLContext> Context = nullptr;
+    mutable Ref<OpenGLContext> Context = nullptr;
     GLuint VertexArrayID = 0;
     GLuint ID = 0;
 };

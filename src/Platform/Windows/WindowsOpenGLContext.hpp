@@ -18,59 +18,107 @@ public:
     }
     void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) final {
         this->ChangeContextIfNecessary();
-        this->glClearColorFunc(red, green, blue, alpha);
+        return this->glClearColorFunc(red, green, blue, alpha);
     }
     void glClear(GLenum mask) final {
         this->ChangeContextIfNecessary();
-        this->glClearFunc(mask);
+        return this->glClearFunc(mask);
     }
     void glFlush() final {
         this->ChangeContextIfNecessary();
-        this->glFlushFunc();
+        return this->glFlushFunc();
     }
     void glViewport(GLint x, GLint y, GLsizei width, GLsizei height) final {
         this->ChangeContextIfNecessary();
-        this->glViewportFunc(x, y, width, height);
+        return this->glViewportFunc(x, y, width, height);
     }
     void glDrawArrays(GLenum mode, GLint first, GLsizei count) final {
         this->ChangeContextIfNecessary();
-        this->glDrawArraysFunc(mode, first, count);
+        return this->glDrawArraysFunc(mode, first, count);
     }
     void glGenBuffers(GLsizei n, GLuint* buffers) final {
         this->ChangeContextIfNecessary();
-        this->glGenBuffersFunc(n, buffers);
+        return this->glGenBuffersFunc(n, buffers);
     }
     void glDeleteBuffers(GLsizei n, const GLuint* buffers) final {
         this->ChangeContextIfNecessary();
-        this->glDeleteBuffersFunc(n, buffers);
+        return this->glDeleteBuffersFunc(n, buffers);
     }
     void glBindBuffer(GLenum target, GLuint buffer) final {
         this->ChangeContextIfNecessary();
-        this->glBindBufferFunc(target, buffer);
+        return this->glBindBufferFunc(target, buffer);
     }
     void glBufferData(GLenum target, GLsizeiptr size, const void* data, GLenum usage) final {
         this->ChangeContextIfNecessary();
-        this->glBufferDataFunc(target, size, data, usage);
+        return this->glBufferDataFunc(target, size, data, usage);
     }
     void glGenVertexArrays(GLsizei n, GLuint* arrays) final {
         this->ChangeContextIfNecessary();
-        this->glGenVertexArraysFunc(n, arrays);
+        return this->glGenVertexArraysFunc(n, arrays);
     }
     void glDeleteVertexArrays(GLsizei n, const GLuint* arrays) final {
         this->ChangeContextIfNecessary();
-        this->glDeleteVertexArraysFunc(n, arrays);
+        return this->glDeleteVertexArraysFunc(n, arrays);
     }
     void glBindVertexArray(GLuint array) final {
         this->ChangeContextIfNecessary();
-        this->glBindVertexArrayFunc(array);
+        return this->glBindVertexArrayFunc(array);
     }
     void glEnableVertexAttribArray(GLuint index) final {
         this->ChangeContextIfNecessary();
-        this->glEnableVertexAttribArrayFunc(index);
+        return this->glEnableVertexAttribArrayFunc(index);
     }
     void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer) final {
         this->ChangeContextIfNecessary();
-        this->glVertexAttribPointerFunc(index, size, type, normalized, stride, pointer);
+        return this->glVertexAttribPointerFunc(index, size, type, normalized, stride, pointer);
+    }
+    GLuint glCreateShader(GLenum shaderType) final {
+        this->ChangeContextIfNecessary();
+        return this->glCreateShaderFunc(shaderType);
+    }
+    void glDeleteShader(GLuint shader) final {
+        this->ChangeContextIfNecessary();
+        return this->glDeleteShaderFunc(shader);
+    }
+    void glShaderSource(GLuint shader, GLsizei count, const GLchar** string, const GLint* length) final {
+        this->ChangeContextIfNecessary();
+        return this->glShaderSourceFunc(shader, count, string, length);
+    }
+    void glCompileShader(GLuint shader) final {
+        this->ChangeContextIfNecessary();
+        return this->glCompileShaderFunc(shader);
+    }
+    void glGetShaderiv(GLuint shader, GLenum pname, GLint* params) final {
+        this->ChangeContextIfNecessary();
+        return this->glGetShaderivFunc(shader, pname, params);
+    }
+    GLuint glCreateProgram() final {
+        this->ChangeContextIfNecessary();
+        return this->glCreateProgramFunc();
+    }
+    void glDeleteProgram(GLuint program) final {
+        this->ChangeContextIfNecessary();
+        return this->glDeleteProgramFunc(program);
+    }
+    void glAttachShader(GLuint program, GLuint shader) final {
+        this->ChangeContextIfNecessary();
+        return this->glAttachShaderFunc(program, shader);
+    }
+    void glDetachShader(GLuint program, GLuint shader) final {
+        this->ChangeContextIfNecessary();
+        return this->glDetachShaderFunc(program, shader);
+    }
+    void glLinkProgram(GLuint program) final {
+        this->ChangeContextIfNecessary();
+        return this->glLinkProgramFunc(program);
+    }
+    void glGetProgramiv(GLuint program, GLenum pname, GLint* params) final {
+        this->ChangeContextIfNecessary();
+        return this->glGetProgramivFunc(program, pname, params);
+    }
+    void glUseProgram(GLuint program) final {
+        this->ChangeContextIfNecessary();
+        return this->glUseProgramFunc(program);
     }
 private:
     GLenum (APIENTRY *glGetErrorFunc)() = nullptr;
@@ -88,6 +136,18 @@ private:
     void (APIENTRY *glBindVertexArrayFunc)(GLuint array) = nullptr;
     void (APIENTRY *glEnableVertexAttribArrayFunc)(GLuint index) = nullptr;
     void (APIENTRY *glVertexAttribPointerFunc)(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer) = nullptr;
+    GLuint (APIENTRY *glCreateShaderFunc)(GLenum shaderType) = nullptr;
+    void (APIENTRY *glDeleteShaderFunc)(GLuint shader) = nullptr;
+    void (APIENTRY *glShaderSourceFunc)(GLuint shader, GLsizei count, const GLchar** string, const GLint* length) = nullptr;
+    void (APIENTRY *glCompileShaderFunc)(GLuint shader) = nullptr;
+    void (APIENTRY *glGetShaderivFunc)(GLuint shader, GLenum pname, GLint* params) = nullptr;
+    GLuint (APIENTRY *glCreateProgramFunc)() = nullptr;
+    void (APIENTRY *glDeleteProgramFunc)(GLuint program) = nullptr;
+    void (APIENTRY *glAttachShaderFunc)(GLuint program, GLuint shader) = nullptr;
+    void (APIENTRY *glDetachShaderFunc)(GLuint program, GLuint shader) = nullptr;
+    void (APIENTRY *glLinkProgramFunc)(GLuint program) = nullptr;
+    void (APIENTRY *glGetProgramivFunc)(GLuint program, GLenum pname, GLint* params) = nullptr;
+    void (APIENTRY *glUseProgramFunc)(GLuint program) = nullptr;
 private:
     static HGLRC (WINAPI *wglCreateContext)(HDC);
     static BOOL (WINAPI *wglDeleteContext)(HGLRC);

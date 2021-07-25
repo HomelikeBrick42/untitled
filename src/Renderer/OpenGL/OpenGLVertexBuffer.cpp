@@ -13,12 +13,12 @@ OpenGLVertexBuffer::~OpenGLVertexBuffer() {
     this->Context->glDeleteVertexArrays(1, &this->VertexArrayID);
 }
 
-void OpenGLVertexBuffer::Bind() {
+void OpenGLVertexBuffer::Bind() const {
     this->Context->glBindVertexArray(this->VertexArrayID);
     this->Context->glBindBuffer(GL_ARRAY_BUFFER, this->ID);
 }
 
-void OpenGLVertexBuffer::UnBind() {
+void OpenGLVertexBuffer::UnBind() const {
     this->Context->glBindVertexArray(0);
     this->Context->glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -29,7 +29,7 @@ void OpenGLVertexBuffer::SetData(const void* data, u64 size) {
     this->UnBind();
 }
 
-void OpenGLVertexBuffer::SetLayout(const std::vector<VertexBufferElement>& elements) {
+void OpenGLVertexBuffer::SetLayout(const std::vector<VertexBufferElement>& layout) {
     auto getElementSize = [](VertexBufferElement element) -> GLsizei {
         switch (element) {
             case VertexBufferElement::Float:
@@ -78,13 +78,13 @@ void OpenGLVertexBuffer::SetLayout(const std::vector<VertexBufferElement>& eleme
     this->Bind();
 
     GLsizei stride = 0;
-    for (const auto& element: elements) {
+    for (const auto& element: layout) {
         stride += getElementSize(element);
     }
 
     GLsizei offset = 0;
     GLuint index = 0;
-    for (const auto& element: elements) {
+    for (const auto& element: layout) {
         this->Context->glEnableVertexAttribArray(index);
         this->Context->glVertexAttribPointer(
                 index,

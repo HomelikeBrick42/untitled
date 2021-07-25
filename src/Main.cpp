@@ -25,6 +25,8 @@ private:
         this->RenderContext = this->Surface->CreateRenderContext(RendererAPI::OpenGL);
         this->OpenGLRenderContext = this->RenderContext.As<OpenGLContext>();
 
+        this->ColorShader = this->RenderContext->CreateShader(VertexShaderSource, FragmentShaderSource);
+
         f32 vertices[] = {
                 +0.0f, +0.5f, 0.0f,
                 +0.5f, -0.5f, 0.0f,
@@ -40,9 +42,10 @@ private:
     }
 
     void Render() {
-        this->OpenGLRenderContext->glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        this->OpenGLRenderContext->glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         this->OpenGLRenderContext->glClear(GL_COLOR_BUFFER_BIT);
 
+        this->ColorShader->Bind();
         this->TriangleVertexBuffer->Bind();
         this->OpenGLRenderContext->glDrawArrays(GL_TRIANGLE, 0, 3);
 
@@ -64,8 +67,28 @@ private:
 private:
     Ref<Surface> Surface = nullptr;
     Ref<RenderContext> RenderContext = nullptr;
+    Ref<Shader> ColorShader = nullptr;
     Ref<VertexBuffer> TriangleVertexBuffer = nullptr;
     Ref<OpenGLContext> OpenGLRenderContext = nullptr;
+private:
+    const String VertexShaderSource = R"(
+#version 440 core
+
+layout(location = 0) in vec4 a_Position;
+
+void main() {
+    gl_Position = a_Position;
+}
+)";
+    const String FragmentShaderSource  = R"(
+#version 440 core
+
+layout(location = 0) out vec4 o_Color;
+
+void main() {
+    o_Color = vec4(1.0, 0.0, 0.0, 1.0);
+}
+)";
 };
 
 int main() {
