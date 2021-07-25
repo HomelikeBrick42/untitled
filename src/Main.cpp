@@ -21,8 +21,8 @@ public:
 private:
     void Init() {
         this->Surface = Surface::Create(640, 480, "Surface");
-        this->Surface->SetCloseCallback(BIND_MEMBER_FN(Application::SurfaceCloseCallback), nullptr);
-        this->Surface->SetResizeCallback(BIND_MEMBER_FN(Application::SurfaceResizeCallback), nullptr);
+        this->Surface->SetCloseCallback(BIND_MEMBER_FN(SurfaceCloseCallback), nullptr);
+        this->Surface->SetResizeCallback(BIND_MEMBER_FN(SurfaceResizeCallback), nullptr);
 
         this->RenderContext = this->Surface->CreateRenderContext(RendererAPI::OpenGL);
 
