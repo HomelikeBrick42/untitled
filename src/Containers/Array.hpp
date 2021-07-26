@@ -23,8 +23,10 @@ public:
     Array(const std::initializer_list<T>& list)
         : Data(nullptr), Length(list.size()), Capacity(list.size()) {
         this->Data = static_cast<T*>(::operator new(this->Capacity * sizeof(T)));
-        for (u64 i = 0; i < list.size(); i++) {
-            new(&this->Data[i]) T(list[i]);
+        u64 i = 0;
+        for (auto& item: list) {
+            new(&this->Data[i]) T(item);
+            i++;
         }
     }
 
