@@ -1,11 +1,9 @@
 #pragma once
 
 #include "Core/Defines.hpp"
+#include "Math/Vector.hpp"
 
 #include <cmath>
-
-template<u64 Length, typename T>
-struct Vector;
 
 template<typename T>
 using Vector3 = Vector<3, T>;
@@ -13,7 +11,7 @@ using Vector3 = Vector<3, T>;
 using Vector3f = Vector3<f32>;
 
 template<typename T>
-struct Vector<3, T> {
+struct Matrix<3, 1, T> {
     union {
         struct {
             T x;
@@ -27,11 +25,11 @@ struct Vector<3, T> {
         };
     };
 
-    Vector<3, T>() : x(T()), y(T()), z(T()) {}
+    Matrix<3, 1, T>() : x(T()), y(T()), z(T()) {}
 
-    Vector<3, T>(const T& scalar) : x(scalar), y(scalar), z(scalar) {}
+    Matrix<3, 1, T>(const T& scalar) : x(scalar), y(scalar), z(scalar) {}
 
-    Vector<3, T>(const T& x, const T& y, const T& z) : x(x), y(y), z(z) {}
+    Matrix<3, 1, T>(const T& x, const T& y, const T& z) : x(x), y(y), z(z) {}
 
     T& operator[](u64 index) {
         switch (index) {

@@ -3,13 +3,14 @@ project(untitled)
 
 set(CMAKE_CXX_STANDARD 20)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" OR "x${CMAKE_CXX_SIMULATE_ID}" STREQUAL "xMSVC")
     add_compile_options(-W4)
 else ()
-    add_compile_options(-Wall)
+    add_compile_options(
+            -Wall
+            -Wextra)
 endif ()
 add_compile_options(
-        -Wextra
         -Werror
         -Wno-unused-parameter)
 
@@ -26,6 +27,8 @@ add_executable(
         src/Core/Ref.hpp
         src/Core/Surface.cpp
         src/Core/Surface.hpp
+        src/Math/Matrix.hpp
+        src/Math/Vector.hpp
         src/Math/Vector3.hpp
         src/Platform/Windows/WindowsOpenGLContext.cpp
         src/Platform/Windows/WindowsOpenGLContext.hpp
