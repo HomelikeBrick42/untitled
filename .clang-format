@@ -47,7 +47,7 @@ BraceWrapping:
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
 BreakBeforeBinaryOperators: None
-BreakBeforeBraces: Attach
+BreakBeforeBraces: Custom
 BreakBeforeInheritanceComma: false
 BreakInheritanceList: BeforeColon
 BreakBeforeTernaryOperators: true
@@ -84,9 +84,9 @@ IncludeCategories:
     SortPriority:    0
 IncludeIsMainRegex: '(Test)?$'
 IncludeIsMainSourceRegex: ''
-IndentCaseLabels: false
-IndentCaseBlocks: true
-IndentGotoLabels: true
+IndentCaseLabels: true
+IndentCaseBlocks: false
+IndentGotoLabels: false
 IndentPPDirectives: BeforeHash
 IndentExternBlock: AfterExternBlock
 IndentWidth:     4

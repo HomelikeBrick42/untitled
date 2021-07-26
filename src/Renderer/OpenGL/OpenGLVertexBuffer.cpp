@@ -35,45 +35,45 @@ void OpenGLVertexBuffer::SetData(const void* data, u64 size) {
 void OpenGLVertexBuffer::SetLayout(const std::vector<VertexBufferElement>& layout) {
     auto getElementSize = [](VertexBufferElement element) -> GLsizei {
         switch (element) {
-        case VertexBufferElement::Float:
-            return sizeof(GLfloat);
-        case VertexBufferElement::Float2:
-            return sizeof(GLfloat) * 2;
-        case VertexBufferElement::Float3:
-            return sizeof(GLfloat) * 3;
-        case VertexBufferElement::Float4:
-            return sizeof(GLfloat) * 4;
-        default:
-            return 0;
+            case VertexBufferElement::Float:
+                return sizeof(GLfloat);
+            case VertexBufferElement::Float2:
+                return sizeof(GLfloat) * 2;
+            case VertexBufferElement::Float3:
+                return sizeof(GLfloat) * 3;
+            case VertexBufferElement::Float4:
+                return sizeof(GLfloat) * 4;
+            default:
+                return 0;
         }
         return 0;
     };
 
     auto getElementCount = [](VertexBufferElement element) -> GLint {
         switch (element) {
-        case VertexBufferElement::Float:
-            return 1;
-        case VertexBufferElement::Float2:
-            return 2;
-        case VertexBufferElement::Float3:
-            return 3;
-        case VertexBufferElement::Float4:
-            return 4;
-        default:
-            return 0;
+            case VertexBufferElement::Float:
+                return 1;
+            case VertexBufferElement::Float2:
+                return 2;
+            case VertexBufferElement::Float3:
+                return 3;
+            case VertexBufferElement::Float4:
+                return 4;
+            default:
+                return 0;
         }
         return 0;
     };
 
     auto elementToOpenGLType = [](VertexBufferElement element) -> GLenum {
         switch (element) {
-        case VertexBufferElement::Float:
-        case VertexBufferElement::Float2:
-        case VertexBufferElement::Float3:
-        case VertexBufferElement::Float4:
-            return GL_FLOAT;
-        default:
-            return 0;
+            case VertexBufferElement::Float:
+            case VertexBufferElement::Float2:
+            case VertexBufferElement::Float3:
+            case VertexBufferElement::Float4:
+                return GL_FLOAT;
+            default:
+                return 0;
         }
         return 0;
     };

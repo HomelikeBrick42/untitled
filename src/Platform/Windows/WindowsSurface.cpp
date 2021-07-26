@@ -113,16 +113,13 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
     LRESULT result = 0;
 
     switch (message) {
-    case WM_CLOSE:
-    case WM_QUIT:
-    case WM_DESTROY:
-        {
+        case WM_CLOSE:
+        case WM_QUIT:
+        case WM_DESTROY: {
             this->CloseCallback(this, this->CloseCallbackUserData);
-        }
-        break;
+        } break;
 
-    case WM_SIZE:
-        {
+        case WM_SIZE: {
             RECT clientRect = {};
             GetClientRect(this->WindowHandle, &clientRect);
             s32 width  = clientRect.right - clientRect.left;
@@ -130,14 +127,11 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
             if (width > 0 && height > 0) {
                 this->ResizeCallback(this, this->ResizeCallbackUserData, static_cast<u32>(width), static_cast<u32>(height));
             }
-        }
-        break;
+        } break;
 
-    default:
-        {
+        default: {
             result = DefWindowProcA(hWnd, message, wParam, lParam);
-        }
-        break;
+        } break;
     }
 
     return result;
@@ -145,11 +139,11 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
 
 Ref<RenderContext> WindowsSurface::CreateRenderContext(RendererAPI api) {
     switch (api) {
-    case RendererAPI::OpenGL:
-        return Ref<WindowsOpenGLContext>::Create(this);
+        case RendererAPI::OpenGL:
+            return Ref<WindowsOpenGLContext>::Create(this);
 
-    default:
-        return nullptr;
+        default:
+            return nullptr;
     }
     return nullptr;
 }
