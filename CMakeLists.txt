@@ -13,6 +13,8 @@ add_compile_options(
         -Werror
         -Wno-unused-parameter)
 
+add_compile_options(-D_USE_MATH_DEFINES)
+
 include_directories(src)
 
 add_executable(
