@@ -2,7 +2,7 @@
 
 #include "Core/Defines.hpp"
 #include "Core/Ref.hpp"
-#include "Core/String.hpp"
+#include "Containers/String.hpp"
 #include "Renderer/VertexBufferElement.hpp"
 #include "Math/Vector3.hpp"
 

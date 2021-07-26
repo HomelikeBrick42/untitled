@@ -26,3 +26,11 @@ String::String(String&& other) : Data(other.Data), Length(other.Length) {
 String::~String() {
     delete[] this->Data;
 }
+
+u8& String::operator[](u64 index) {
+    return this->Data[index];
+}
+
+const u8& String::operator[](u64 index) const {
+    return this->Data[index];
+}

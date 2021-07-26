@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Defines.hpp"
-#include "Ref.hpp"
+#include "Core/Defines.hpp"
+#include "Core/Ref.hpp"
 
 class String final: public IRef {
 public:
@@ -11,7 +11,10 @@ public:
     String(const String& other);
     String(String&& other);
     ~String();
-public: // TODO: Do I have this public?
+public:
+    u8& operator[](u64 index);
+    const u8& operator[](u64 index) const;
+public: // TODO: Do I make this private?
     u8* Data   = nullptr;
     u64 Length = 0;
 };

@@ -2,7 +2,7 @@
 
 #include "Core/Defines.hpp"
 #include "Core/Ref.hpp"
-#include "Core/String.hpp"
+#include "Containers/String.hpp"
 #include "Renderer/RenderContext.hpp"
 
 class Shader: public IRef {
