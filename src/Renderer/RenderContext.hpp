@@ -2,8 +2,9 @@
 
 #include "Core/Defines.hpp"
 #include "Core/Ref.hpp"
-#include "Containers/String.hpp"
 #include "Renderer/VertexBufferElement.hpp"
+#include "Containers/Array.hpp"
+#include "Containers/String.hpp"
 #include "Math/Vector3.hpp"
 
 #include <vector>
@@ -24,7 +25,7 @@ public:
     virtual ~RenderContext()       = default;
 public:
     virtual Ref<Shader> CreateShader(const String& vertexSource, const String& fragmentSource)                               = 0;
-    virtual Ref<VertexBuffer> CreateVertexBuffer(const void* data, u64 size, const std::vector<VertexBufferElement>& layout) = 0;
+    virtual Ref<VertexBuffer> CreateVertexBuffer(const void* data, u64 size, const Array<VertexBufferElement>& layout) = 0;
 public:
     virtual void SetClearColor(const Vector3f& color)             = 0;
     virtual void Clear()                                          = 0;

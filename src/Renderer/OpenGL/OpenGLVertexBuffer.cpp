@@ -3,7 +3,7 @@
 OpenGLVertexBuffer::OpenGLVertexBuffer(const Ref<OpenGLContext>& context,
                                        const void* data,
                                        u64 size,
-                                       const std::vector<VertexBufferElement>& elements)
+                                       const Array<VertexBufferElement>& elements)
     : Context(context) {
     this->Context->glGenBuffers(1, &this->ID);
     this->Context->glGenVertexArrays(1, &this->VertexArrayID);
@@ -32,7 +32,7 @@ void OpenGLVertexBuffer::SetData(const void* data, u64 size) {
     this->UnBind();
 }
 
-void OpenGLVertexBuffer::SetLayout(const std::vector<VertexBufferElement>& layout) {
+void OpenGLVertexBuffer::SetLayout(const Array<VertexBufferElement>& layout) {
     auto getElementSize = [](VertexBufferElement element) -> GLsizei {
         switch (element) {
             case VertexBufferElement::Float:
@@ -81,22 +81,20 @@ void OpenGLVertexBuffer::SetLayout(const std::vector<VertexBufferElement>& layou
     this->Bind();
 
     GLsizei stride = 0;
-    for (const auto& element : layout) {
-        stride += getElementSize(element);
+    for (u64 i = 0; i < layout.Length; i++) {
+        stride += getElementSize(layout[i]);
     }
 
     GLsizei offset = 0;
-    GLuint index   = 0;
-    for (const auto& element : layout) {
-        this->Context->glEnableVertexAttribArray(index);
-        this->Context->glVertexAttribPointer(index,
-                                             getElementCount(element),
-                                             elementToOpenGLType(element),
+    for (u64 i = 0; i < layout.Length; i++) {
+        this->Context->glEnableVertexAttribArray(i);
+        this->Context->glVertexAttribPointer(i,
+                                             getElementCount(layout[i]),
+                                             elementToOpenGLType(layout[i]),
                                              GL_FALSE,
                                              stride,
                                              reinterpret_cast<const void*>(offset));
-        offset += getElementSize(element);
-        index++;
+        offset += getElementSize(layout[i]);
     }
 
     this->UnBind();

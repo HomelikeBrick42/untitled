@@ -4,8 +4,6 @@
 #include "Renderer/Shader.hpp"
 #include "Renderer/VertexBuffer.hpp"
 
-#include "Containers/Array.hpp"
-
 class Application {
 public:
     Application()              = default;

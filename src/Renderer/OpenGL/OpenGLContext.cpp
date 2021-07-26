@@ -2,7 +2,7 @@
 #include "Renderer/OpenGL/OpenGLVertexBuffer.hpp"
 #include "Renderer/OpenGL/OpenGLShader.hpp"
 
-Ref<VertexBuffer> OpenGLContext::CreateVertexBuffer(const void* data, u64 size, const std::vector<VertexBufferElement>& layout) {
+Ref<VertexBuffer> OpenGLContext::CreateVertexBuffer(const void* data, u64 size, const Array<VertexBufferElement>& layout) {
     return Ref<OpenGLVertexBuffer>::Create(this, data, size, layout);
 }
 

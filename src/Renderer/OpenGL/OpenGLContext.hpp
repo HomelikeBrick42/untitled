@@ -55,7 +55,7 @@ public:
     ~OpenGLContext() override      = default;
 public:
     Ref<Shader> CreateShader(const String& vertexSource, const String& fragmentSource) final;
-    Ref<VertexBuffer> CreateVertexBuffer(const void* data, u64 size, const std::vector<VertexBufferElement>& layout) final;
+    Ref<VertexBuffer> CreateVertexBuffer(const void* data, u64 size, const Array<VertexBufferElement>& layout) final;
 public:
     void SetClearColor(const Vector3f& color) final;
     void Clear() final;
