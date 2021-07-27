@@ -49,3 +49,43 @@ GLuint OpenGLShader::CreateShader(GLenum type, const String& source) {
 
     return shader;
 }
+
+void OpenGLShader::SetInt(const char* name, s32 value) {
+    GLint location = this->Context->glGetUniformLocation(this->ID, name);
+    this->Context->glProgramUniform1i(this->ID, location, value);
+}
+
+void OpenGLShader::SetFloat(const char* name, f32 value) {
+    GLint location = this->Context->glGetUniformLocation(this->ID, name);
+    this->Context->glProgramUniform1f(this->ID, location, value);
+}
+
+void OpenGLShader::SetVector1f(const char* name, const Vector1f& vector) {
+    GLint location = this->Context->glGetUniformLocation(this->ID, name);
+    this->Context->glProgramUniform1f(this->ID, location, vector.x);
+}
+
+void OpenGLShader::SetVector2f(const char* name, const Vector2f& vector) {
+    GLint location = this->Context->glGetUniformLocation(this->ID, name);
+    this->Context->glProgramUniform2f(this->ID, location, vector.x, vector.y);
+}
+
+void OpenGLShader::SetVector3f(const char* name, const Vector3f& vector) {
+    GLint location = this->Context->glGetUniformLocation(this->ID, name);
+    this->Context->glProgramUniform3f(this->ID, location, vector.x, vector.y, vector.z);
+}
+
+void OpenGLShader::SetVector4f(const char* name, const Vector4f& vector) {
+    GLint location = this->Context->glGetUniformLocation(this->ID, name);
+    this->Context->glProgramUniform4f(this->ID, location, vector.x, vector.y, vector.z, vector.w);
+}
+
+void OpenGLShader::SetMatrix3x3f(const char* name, const Matrix3x3f& matrix) {
+    GLint location = this->Context->glGetUniformLocation(this->ID, name);
+    this->Context->glProgramUniformMatrix3fv(this->ID, location, 1, GL_FALSE, reinterpret_cast<const GLfloat*>(&matrix));
+}
+
+void OpenGLShader::SetMatrix4x4f(const char* name, const Matrix4x4f& matrix) {
+    GLint location = this->Context->glGetUniformLocation(this->ID, name);
+    this->Context->glProgramUniformMatrix4fv(this->ID, location, 1, GL_FALSE, reinterpret_cast<const GLfloat*>(&matrix));
+}

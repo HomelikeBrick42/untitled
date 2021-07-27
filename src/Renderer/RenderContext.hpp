@@ -24,7 +24,7 @@ public:
     RenderContext(RenderContext&&) = delete;
     virtual ~RenderContext()       = default;
 public:
-    virtual Ref<Shader> CreateShader(const String& vertexSource, const String& fragmentSource)                               = 0;
+    virtual Ref<Shader> CreateShader(const String& vertexSource, const String& fragmentSource)                         = 0;
     virtual Ref<VertexBuffer> CreateVertexBuffer(const void* data, u64 size, const Array<VertexBufferElement>& layout) = 0;
 public:
     virtual void SetClearColor(const Vector3f& color)             = 0;

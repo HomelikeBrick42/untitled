@@ -42,6 +42,33 @@ struct Matrix {
     }
 };
 
+template<typename T>
+Matrix4x4<T> OrthographicProjection(const T& left, const T& right, const T& top, const T& bottom, const T& near, const T& far) {
+    Matrix4x4<T> result;
+
+    result[0][0] = T(2) / (right - left);
+    result[1][1] = T(2) / (top - bottom);
+    result[2][2] = T(2) / (far - near);
+    result[3][3] = T(1);
+
+    result[3][0] = -(right + left) / (right - left);
+    result[3][1] = -(top + bottom) / (top - bottom);
+    result[3][2] = -(far + near) / (far - near);
+
+    return result;
+}
+
+template<typename T>
+Matrix4x4<T> TranslationMatrix(const Vector3<T>& position) {
+    Matrix4x4<T> result = Matrix4x4<T>::Identity();
+
+    result[3][0] = position.x;
+    result[3][1] = position.y;
+    result[3][2] = position.z;
+
+    return result;
+};
+
 template<u64 R1, u64 C1R2, u64 C2, typename T>
 Matrix<R1, C2, T> operator*(const Matrix<R1, C1R2, T>& a, const Matrix<C1R2, C2, T>& b) {
     Matrix<R1, C2, T> result;

@@ -121,6 +121,40 @@ public:
         this->ChangeContextIfNecessary();
         return this->glUseProgramFunc(program);
     }
+    GLint glGetUniformLocation(GLuint program, const GLchar* name) final {
+        this->ChangeContextIfNecessary();
+        return this->glGetUniformLocationFunc(program, name);
+    }
+    void glProgramUniform1f(GLuint program, GLint location, GLfloat v0) final {
+        this->ChangeContextIfNecessary();
+        return this->glProgramUniform1fFunc(program, location, v0);
+    }
+    void glProgramUniform2f(GLuint program, GLint location, GLfloat v0, GLfloat v1) final {
+        this->ChangeContextIfNecessary();
+        return this->glProgramUniform2fFunc(program, location, v0, v1);
+    }
+    void glProgramUniform3f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2) final {
+        this->ChangeContextIfNecessary();
+        return this->glProgramUniform3fFunc(program, location, v0, v1, v2);
+    }
+    void glProgramUniform4f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3) final {
+        this->ChangeContextIfNecessary();
+        return this->glProgramUniform4fFunc(program, location, v0, v1, v2, v3);
+    }
+    void glProgramUniform1i(GLuint program, GLint location, GLint v0) final {
+        this->ChangeContextIfNecessary();
+        return this->glProgramUniform1iFunc(program, location, v0);
+    }
+    void
+    glProgramUniformMatrix3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat* value) final {
+        this->ChangeContextIfNecessary();
+        return this->glProgramUniformMatrix3fvFunc(program, location, count, transpose, value);
+    }
+    void
+    glProgramUniformMatrix4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat* value) final {
+        this->ChangeContextIfNecessary();
+        return this->glProgramUniformMatrix4fvFunc(program, location, count, transpose, value);
+    }
 public:
     Ref<Surface> GetSurface() const final {
         return this->DrawSurface;
@@ -154,6 +188,17 @@ private:
     void(APIENTRY* glLinkProgramFunc)(GLuint program)                                                            = nullptr;
     void(APIENTRY* glGetProgramivFunc)(GLuint program, GLenum pname, GLint* params)                              = nullptr;
     void(APIENTRY* glUseProgramFunc)(GLuint program)                                                             = nullptr;
+    GLint(APIENTRY* glGetUniformLocationFunc)(GLuint program, const GLchar* name)                                = nullptr;
+    void(APIENTRY* glProgramUniform1fFunc)(GLuint program, GLint location, GLfloat v0)                           = nullptr;
+    void(APIENTRY* glProgramUniform2fFunc)(GLuint program, GLint location, GLfloat v0, GLfloat v1)               = nullptr;
+    void(APIENTRY* glProgramUniform3fFunc)(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2)   = nullptr;
+    void(APIENTRY* glProgramUniform4fFunc)(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3) =
+        nullptr;
+    void(APIENTRY* glProgramUniform1iFunc)(GLuint program, GLint location, GLint v0) = nullptr;
+    void(APIENTRY* glProgramUniformMatrix3fvFunc)(
+        GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat* value) = nullptr;
+    void(APIENTRY* glProgramUniformMatrix4fvFunc)(
+        GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat* value) = nullptr;
 private:
     static HGLRC(WINAPI* wglCreateContext)(HDC);
     static BOOL(WINAPI* wglDeleteContext)(HGLRC);

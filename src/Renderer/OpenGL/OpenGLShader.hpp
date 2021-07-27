@@ -15,6 +15,15 @@ public:
 private:
     GLuint CreateShader(GLenum type, const String& source);
 public:
+    void SetInt(const char* name, s32 value) final;
+    void SetFloat(const char* name, f32 value) final;
+    void SetVector1f(const char* name, const Vector1f& vector) final;
+    void SetVector2f(const char* name, const Vector2f& vector) final;
+    void SetVector3f(const char* name, const Vector3f& vector) final;
+    void SetVector4f(const char* name, const Vector4f& vector) final;
+    void SetMatrix3x3f(const char* name, const Matrix3x3f& matrix) final;
+    void SetMatrix4x4f(const char* name, const Matrix4x4f& matrix) final;
+public:
     Ref<RenderContext> GetContext() const final {
         return this->Context;
     }

@@ -90,6 +90,16 @@ public:
     virtual void glLinkProgram(GLuint program)                                                                              = 0;
     virtual void glGetProgramiv(GLuint program, GLenum pname, GLint* params)                                                = 0;
     virtual void glUseProgram(GLuint program)                                                                               = 0;
+    virtual GLint glGetUniformLocation(GLuint program, const GLchar* name)                                                  = 0;
+    virtual void glProgramUniform1f(GLuint program, GLint location, GLfloat v0)                                             = 0;
+    virtual void glProgramUniform2f(GLuint program, GLint location, GLfloat v0, GLfloat v1)                                 = 0;
+    virtual void glProgramUniform3f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2)                     = 0;
+    virtual void glProgramUniform4f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)         = 0;
+    virtual void glProgramUniform1i(GLuint program, GLint location, GLint v0)                                               = 0;
+    virtual void
+    glProgramUniformMatrix3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat* value) = 0;
+    virtual void
+    glProgramUniformMatrix4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat* value) = 0;
 protected:
     OpenGLContext() = default;
 };

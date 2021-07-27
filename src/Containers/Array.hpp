@@ -20,12 +20,11 @@ public:
 
     Array(Array&& other) : Data(other.Data), Length(other.Length), Capacity(other.Capacity) {}
 
-    Array(const std::initializer_list<T>& list)
-        : Data(nullptr), Length(list.size()), Capacity(list.size()) {
+    Array(const std::initializer_list<T>& list) : Data(nullptr), Length(list.size()), Capacity(list.size()) {
         this->Data = static_cast<T*>(::operator new(this->Capacity * sizeof(T)));
-        u64 i = 0;
-        for (auto& item: list) {
-            new(&this->Data[i]) T(item);
+        u64 i      = 0;
+        for (auto& item : list) {
+            new (&this->Data[i]) T(item);
             i++;
         }
     }
@@ -59,7 +58,7 @@ public:
         return this->Data[this->Length - 1];
     }
 
-    template<typename ...Args>
+    template<typename... Args>
     T& Emplace(Args&&... args) {
         this->GrowIfNecessary();
         new (&this->Data[this->Length]) T(std::forward<Args>(args)...);

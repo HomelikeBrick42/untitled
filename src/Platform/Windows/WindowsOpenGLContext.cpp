@@ -48,8 +48,6 @@ WindowsOpenGLContext::WindowsOpenGLContext(const Ref<Surface>& surface)
     }
 
     this->OpenGLContext   = wglCreateContext(this->DrawSurface->DeviceContext);
-    HGLRC prevContext     = wglGetCurrentContext();
-    HDC prevDeviceContext = wglGetCurrentDC();
 
     wglMakeCurrent(this->DrawSurface->DeviceContext, this->OpenGLContext);
 
@@ -83,10 +81,16 @@ WindowsOpenGLContext::WindowsOpenGLContext(const Ref<Surface>& surface)
     LOAD(glLinkProgram);
     LOAD(glGetProgramiv);
     LOAD(glUseProgram);
+    LOAD(glGetUniformLocation);
+    LOAD(glProgramUniform1f);
+    LOAD(glProgramUniform2f);
+    LOAD(glProgramUniform3f);
+    LOAD(glProgramUniform4f);
+    LOAD(glProgramUniform1i);
+    LOAD(glProgramUniformMatrix3fv);
+    LOAD(glProgramUniformMatrix4fv);
 
     #undef LOAD
-
-    wglMakeCurrent(prevDeviceContext, prevContext);
 }
 
 WindowsOpenGLContext::~WindowsOpenGLContext() {

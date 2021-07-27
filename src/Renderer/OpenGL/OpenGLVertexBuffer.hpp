@@ -5,10 +5,7 @@
 
 class OpenGLVertexBuffer final: public VertexBuffer {
 public:
-    OpenGLVertexBuffer(const Ref<OpenGLContext>& context,
-                       const void* data,
-                       u64 size,
-                       const Array<VertexBufferElement>& elements);
+    OpenGLVertexBuffer(const Ref<OpenGLContext>& context, const void* data, u64 size, const Array<VertexBufferElement>& elements);
     OpenGLVertexBuffer(OpenGLVertexBuffer&)  = delete;
     OpenGLVertexBuffer(OpenGLVertexBuffer&&) = delete;
     ~OpenGLVertexBuffer() override;
