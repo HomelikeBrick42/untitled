@@ -29,7 +29,9 @@ add_executable(
         src/Core/Surface.hpp
         src/Math/Matrix.hpp
         src/Math/Vector.hpp
+        src/Math/Vector2.hpp
         src/Math/Vector3.hpp
+        src/Math/Vector4.hpp
         src/Platform/Windows/WindowsOpenGLContext.cpp
         src/Platform/Windows/WindowsOpenGLContext.hpp
         src/Platform/Windows/WindowsSurface.cpp
