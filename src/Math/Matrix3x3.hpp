@@ -5,6 +5,6 @@
 #include "Math/Matrix.hpp"
 
 template<typename T>
-using Matrix4x4 = Matrix<4, 4, T>;
+using Matrix3x3 = Matrix<3, 3, T>;
 
-using Matrix4x4f = Matrix4x4<f32>;
+using Matrix3x3f = Matrix3x3<f32>;

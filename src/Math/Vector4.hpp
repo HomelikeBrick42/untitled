@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Core/Defines.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Math.hpp"
+
+template<u64 Length, typename T>
+struct Vector;
 
 template<typename T>
 using Vector4 = Vector<4, T>;
