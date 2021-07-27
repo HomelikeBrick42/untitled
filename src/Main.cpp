@@ -4,7 +4,7 @@
 #include "Renderer/Shader.hpp"
 #include "Renderer/VertexBuffer.hpp"
 
-#include "Math/Matrix3x3.hpp"
+#include "Math/Matrix.hpp"
 
 class Application {
 public:

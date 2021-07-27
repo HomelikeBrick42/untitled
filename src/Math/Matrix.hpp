@@ -5,6 +5,19 @@
 #include "Math/Vector.hpp"
 
 template<u64 R, u64 C, typename T>
+struct Matrix;
+
+template<typename T>
+using Matrix3x3 = Matrix<3, 3, T>;
+
+using Matrix3x3f = Matrix3x3<f32>;
+
+template<typename T>
+using Matrix4x4 = Matrix<4, 4, T>;
+
+using Matrix4x4f = Matrix4x4<f32>;
+
+template<u64 R, u64 C, typename T>
 struct Matrix {
     Vector<C, T> Rows[R] = {};
 
