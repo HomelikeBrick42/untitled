@@ -6,6 +6,8 @@
 
 #include "Math/Matrix.hpp"
 
+#include "Game/Circle.hpp"
+
 class Application {
 public:
     Application()              = default;
@@ -22,8 +24,8 @@ public:
     }
 private:
     void Init() {
-        u32 width = 640;
-        u32 height = 480;
+        u32 width     = 640;
+        u32 height    = 480;
         this->Surface = Surface::Create(width, height, "Surface");
         this->Surface->SetCloseCallback(BIND_MEMBER_FN(SurfaceCloseCallback), nullptr);
         this->Surface->SetResizeCallback(BIND_MEMBER_FN(SurfaceResizeCallback), nullptr);
@@ -33,21 +35,29 @@ private:
         this->CircleShader = this->RenderContext->CreateShader(VertexShaderSource, FragmentShaderSource);
 
         f32 aspect = static_cast<f32>(width) / static_cast<f32>(height);
-        this->CircleShader->SetMatrix4x4f("u_ProjectionMatrix", OrthographicProjection(-aspect, aspect, 1.0f, -1.0f, -1.0f, 1.0f));
+        this->CircleShader->SetMatrix4x4f("u_ProjectionMatrix",
+                                          OrthographicProjection(-aspect, aspect, 1.0f, -1.0f, -1.0f, 1.0f));
 
-        struct { Vector3f Position; Vector2f Coord; } vertices[] = {
-            { { -0.5f, +0.5f, 0.0f }, { -1.0f, +1.0f } },
-            { { +0.5f, +0.5f, 0.0f }, { +1.0f, +1.0f } },
-            { { +0.5f, -0.5f, 0.0f }, { +1.0f, -1.0f } },
-            { { -0.5f, +0.5f, 0.0f }, { -1.0f, +1.0f } },
-            { { +0.5f, -0.5f, 0.0f }, { +1.0f, -1.0f } },
-            { { -0.5f, -0.5f, 0.0f }, { -1.0f, -1.0f } },
+        struct {
+            Vector3f Position;
+            Vector2f Coord;
+        } vertices[] = {
+            { { -1.0f, +1.0f, 0.0f }, { -1.0f, +1.0f } }, { { +1.0f, +1.0f, 0.0f }, { +1.0f, +1.0f } },
+            { { +1.0f, -1.0f, 0.0f }, { +1.0f, -1.0f } }, { { -1.0f, +1.0f, 0.0f }, { -1.0f, +1.0f } },
+            { { +1.0f, -1.0f, 0.0f }, { +1.0f, -1.0f } }, { { -1.0f, -1.0f, 0.0f }, { -1.0f, -1.0f } },
         };
-        this->TriangleVertexBuffer =
-            this->RenderContext->CreateVertexBuffer(vertices, sizeof(vertices), { VertexBufferElement::Float3, VertexBufferElement::Float2 });
+        this->TriangleVertexBuffer = this->RenderContext->CreateVertexBuffer(
+            vertices, sizeof(vertices), { VertexBufferElement::Float3, VertexBufferElement::Float2 });
+
+        this->Circles.Emplace(Vector2f{ -1.0f, 0.0f }, 1.0f);
+        this->Circles.Emplace(Vector2f{ +1.0f, 0.0f }, 1.0f);
     }
 
     void Update() {
+        for (u64 i = 0; i < this->Circles.Length; i++) {
+            // Circle& circle = Circles[i];
+        }
+
         this->Surface->PollEvents();
     }
 
@@ -55,12 +65,18 @@ private:
         this->RenderContext->SetClearColor({ 0.1f, 0.1f, 0.1f });
         this->RenderContext->Clear();
 
-        this->CircleShader->Bind();
-        this->CircleShader->SetMatrix4x4f("u_ViewMatrix", TranslationMatrix(Vector3f{ 0.0f, 0.0f, 0.0f }));
-        this->CircleShader->SetMatrix4x4f("u_ModelMatrix", TranslationMatrix(Vector3f{ 0.0f, 0.0f, 0.0f }));
-        this->CircleShader->SetVector4f("u_Color", { 1.0f, 0.0f, 0.0f, 1.0f });
-        this->TriangleVertexBuffer->Bind();
-        this->RenderContext->Draw(0, 6);
+        this->CircleShader->SetMatrix4x4f("u_ViewMatrix", Matrix4x4f::Identity());
+
+        for (u64 i = 0; i < this->Circles.Length; i++) {
+            Circle& circle = Circles[i];
+
+            this->CircleShader->Bind();
+            this->CircleShader->SetMatrix4x4f("u_ModelMatrix",
+                                              TranslationMatrix(Vector3f{ circle.Position.x, circle.Position.y, 0.0f }));
+            this->CircleShader->SetVector4f("u_Color", { 1.0f, 0.0f, 0.0f, 1.0f }); // TODO: Color per circle
+            this->TriangleVertexBuffer->Bind();
+            this->RenderContext->Draw(0, 6);
+        }
 
         this->RenderContext->Present();
     }
@@ -75,7 +91,8 @@ private:
         this->RenderContext->SetViewport(0, 0, width, height);
 
         f32 aspect = static_cast<f32>(width) / static_cast<f32>(height);
-        this->CircleShader->SetMatrix4x4f("u_ProjectionMatrix", OrthographicProjection(-aspect, aspect, 1.0f, -1.0f, -1.0f, 1.0f));
+        this->CircleShader->SetMatrix4x4f("u_ProjectionMatrix",
+                                          OrthographicProjection(-aspect, aspect, 1.0f, -1.0f, -1.0f, 1.0f));
     }
 private:
     bool Running = true;
@@ -84,6 +101,7 @@ private:
     Ref<RenderContext> RenderContext       = nullptr;
     Ref<Shader> CircleShader               = nullptr;
     Ref<VertexBuffer> TriangleVertexBuffer = nullptr;
+    Array<Circle> Circles                  = {};
 private:
     const String VertexShaderSource   = R"(
 #version 440 core

@@ -27,6 +27,8 @@ add_executable(
         src/Core/Ref.hpp
         src/Core/Surface.cpp
         src/Core/Surface.hpp
+        src/Game/Circle.hpp
+        src/Game/Main.cpp
         src/Math/Math.hpp
         src/Math/Matrix.hpp
         src/Math/Vector.hpp
@@ -47,5 +49,4 @@ add_executable(
         src/Renderer/RenderContext.hpp
         src/Renderer/Shader.hpp
         src/Renderer/VertexBuffer.hpp
-        src/Renderer/VertexBufferElement.hpp
-        src/Main.cpp)
+        src/Renderer/VertexBufferElement.hpp)

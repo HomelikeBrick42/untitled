@@ -69,6 +69,18 @@ Matrix4x4<T> TranslationMatrix(const Vector3<T>& position) {
     return result;
 };
 
+template<typename T>
+Matrix4x4<T> ScaleMatrix(const Vector3<T>& scale) {
+    Matrix4x4<T> result;
+
+    result[0][0] = scale.x;
+    result[1][1] = scale.y;
+    result[2][2] = scale.z;
+    result[3][3] = T(1);
+
+    return result;
+}
+
 template<u64 R1, u64 C1R2, u64 C2, typename T>
 Matrix<R1, C2, T> operator*(const Matrix<R1, C1R2, T>& a, const Matrix<C1R2, C2, T>& b) {
     Matrix<R1, C2, T> result;

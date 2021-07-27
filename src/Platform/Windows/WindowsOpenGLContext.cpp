@@ -47,7 +47,7 @@ WindowsOpenGLContext::WindowsOpenGLContext(const Ref<Surface>& surface)
         // TODO: Error
     }
 
-    this->OpenGLContext   = wglCreateContext(this->DrawSurface->DeviceContext);
+    this->OpenGLContext = wglCreateContext(this->DrawSurface->DeviceContext);
 
     wglMakeCurrent(this->DrawSurface->DeviceContext, this->OpenGLContext);
 
