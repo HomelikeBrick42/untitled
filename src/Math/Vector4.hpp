@@ -3,15 +3,13 @@
 #include "Core/Defines.hpp"
 #include "Math/Vector.hpp"
 
-#include <cmath>
-
 template<typename T>
 using Vector4 = Vector<4, T>;
 
 using Vector4f = Vector4<f32>;
 
 template<typename T>
-struct Matrix<4, 1, T> {
+struct Vector<4, T> {
     union {
         struct {
             T x;
@@ -27,9 +25,9 @@ struct Matrix<4, 1, T> {
         };
     };
 
-    Matrix<4, 1, T>() : x(T()), y(T()), z(T()), w(T()) {}
-    Matrix<4, 1, T>(const T& scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
-    Matrix<4, 1, T>(const T& x, const T& y, const T& z, const T& w) : x(x), y(y), z(z), w(w) {}
+    Vector<4, T>() : x(T()), y(T()), z(T()), w(T()) {}
+    Vector<4, T>(const T& scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
+    Vector<4, T>(const T& x, const T& y, const T& z, const T& w) : x(x), y(y), z(z), w(w) {}
 
     T& operator[](u64 index) {
         switch (index) {

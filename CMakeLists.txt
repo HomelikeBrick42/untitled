@@ -28,6 +28,7 @@ add_executable(
         src/Core/Surface.cpp
         src/Core/Surface.hpp
         src/Math/Matrix.hpp
+        src/Math/Matrix4x4.hpp
         src/Math/Vector.hpp
         src/Math/Vector2.hpp
         src/Math/Vector3.hpp

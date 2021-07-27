@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math/Matrix.hpp"
+#include "Core/Defines.hpp"
 
 template<u64 Length, typename T>
-using Vector = Matrix<Length, 1, T>;
+struct Vector;

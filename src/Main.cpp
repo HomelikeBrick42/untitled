@@ -4,6 +4,8 @@
 #include "Renderer/Shader.hpp"
 #include "Renderer/VertexBuffer.hpp"
 
+#include "Math/Matrix4x4.hpp"
+
 class Application {
 public:
     Application()              = default;
@@ -27,6 +29,14 @@ private:
         this->RenderContext = this->Surface->CreateRenderContext(RendererAPI::OpenGL);
 
         this->ColorShader = this->RenderContext->CreateShader(VertexShaderSource, FragmentShaderSource);
+
+        Matrix4x4f mat = Matrix4x4f::Identity();
+        for (u64 row = 0; row < 4; row++) {
+            for (u64 column = 0; column < 4; column++) {
+                printf("%.2f ", mat[column][row]);
+            }
+            printf("\n");
+        }
 
         Vector3f vertices[] = {
             { +0.0f, +0.5f, 0.0f },
