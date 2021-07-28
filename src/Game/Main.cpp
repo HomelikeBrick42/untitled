@@ -8,6 +8,8 @@
 
 #include "Game/Circle.hpp"
 
+#include <chrono>
+
 class Application {
 public:
     Application()              = default;
@@ -16,8 +18,15 @@ public:
 public:
     void Run() {
         this->Init();
+        using namespace std::chrono_literals;
+
+        auto lastTime = std::chrono::high_resolution_clock::now();
         while (this->Running) {
-            this->Update();
+            auto time = std::chrono::high_resolution_clock::now();
+            f32 delta = std::chrono::duration<f32>(time - lastTime).count();
+            lastTime  = std::chrono::high_resolution_clock::now();
+
+            this->Update(delta);
             this->Render();
         }
         this->Shutdown();
@@ -35,8 +44,9 @@ private:
         this->CircleShader = this->RenderContext->CreateShader(VertexShaderSource, FragmentShaderSource);
 
         f32 aspect = static_cast<f32>(width) / static_cast<f32>(height);
-        this->CircleShader->SetMatrix4x4f("u_ProjectionMatrix",
-                                          OrthographicProjection(-aspect, aspect, 1.0f, -1.0f, -1.0f, 1.0f));
+        this->CircleShader->SetMatrix4x4f(
+            "u_ProjectionMatrix",
+            OrthographicProjection(-aspect * CameraZoom, aspect * CameraZoom, CameraZoom, -CameraZoom, -1.0f, 1.0f));
 
         struct {
             Vector3f Position;
@@ -49,13 +59,71 @@ private:
         this->TriangleVertexBuffer = this->RenderContext->CreateVertexBuffer(
             vertices, sizeof(vertices), { VertexBufferElement::Float3, VertexBufferElement::Float2 });
 
-        this->Circles.Emplace(Vector2f{ -1.0f, 0.0f }, 0.9f);
-        this->Circles.Emplace(Vector2f{ +1.0f, 0.0f }, 0.9f);
+        this->Circles.Emplace(Vector2f{ -3.0f, 0.0f }, 1.0f, 1.0f, Vector2f{ +0.7f, 0.0f });
+        this->Circles.Emplace(Vector2f{ +3.0f, 0.0f }, 1.0f, 2.0f, Vector2f{ -0.7f, 0.1f });
     }
 
-    void Update() {
-        for (u64 i = 0; i < this->Circles.Length; i++) {
-            // Circle& circle = Circles[i];
+    void Update(f32 dt) {
+        for (u64 aIndex = 0; aIndex < this->Circles.Length; aIndex++) {
+            Circle& circleA = Circles[aIndex];
+
+            for (u64 bIndex = aIndex + 1; bIndex < this->Circles.Length; bIndex++) {
+                Circle& circleB = Circles[bIndex];
+
+                if (Vector2f::Length(circleB.Position - circleA.Position) < (circleA.Radius + circleB.Radius)) { // TODO: Optimise
+                    Vector2f collisionNormal  = Vector2f::Normalise(circleB.Position - circleA.Position);
+                    Vector2f relativeVelocity = circleB.Velocity - circleA.Velocity;
+                    f32 normalSpeed           = Vector2f::Dot(relativeVelocity, collisionNormal);
+
+                    f32 inverseMassA = 1.0f / circleA.Mass;
+                    f32 inverseMassB = 1.0f / circleB.Mass;
+
+                    if (normalSpeed >= 0.0f) { // Already moving away
+                        continue;
+                    }
+
+                    // Impulse
+
+                    f32 e            = 1.0f; // TODO: circleA.Bounce * circleB.Bounce
+                    f32 j            = -(1.0f + e) * normalSpeed / (inverseMassA + inverseMassB);
+                    Vector2f impulse = j * collisionNormal;
+
+                    circleA.Velocity -= impulse * inverseMassA;
+                    circleB.Velocity += impulse * inverseMassB;
+
+                    // Friction
+
+                    relativeVelocity = circleB.Velocity - circleA.Velocity;
+                    normalSpeed      = Vector2f::Dot(relativeVelocity, collisionNormal);
+
+                    Vector2f tangent = Vector2f::Normalise(relativeVelocity - normalSpeed * collisionNormal);
+
+                    f32 fVelocity = Vector2f::Dot(relativeVelocity, tangent);
+
+                    f32 aSF = 0.8f; // circleA.StaticFriction
+                    f32 bSF = 0.8f; // circleB.StaticFriction
+                    f32 aDF = 0.8f; // circleA.DynamicFriction
+                    f32 bDF = 0.8f; // circleB.DynamicFriction
+                    f32 mu  = Vector2f::Length({ aSF, bSF });
+
+                    f32 f = -fVelocity / (inverseMassA + inverseMassB);
+
+                    Vector2f friction;
+                    if (fabsf(f) < j * mu) {
+                        friction = f * tangent;
+                    } else {
+                        mu       = Vector2f::Length({ aDF, bDF });
+                        friction = -j * tangent * mu;
+                    }
+
+                    circleA.Velocity -= friction * inverseMassA;
+                    circleB.Velocity += friction * inverseMassB;
+                }
+            }
+
+            circleA.Velocity += circleA.Acceleration / circleA.Mass * dt;
+            circleA.Acceleration = 0.0;
+            circleA.Position += circleA.Velocity * dt;
         }
 
         this->Surface->PollEvents();
@@ -92,12 +160,14 @@ private:
         this->RenderContext->SetViewport(0, 0, width, height);
 
         f32 aspect = static_cast<f32>(width) / static_cast<f32>(height);
-        this->CircleShader->SetMatrix4x4f("u_ProjectionMatrix",
-                                          OrthographicProjection(-aspect, aspect, 1.0f, -1.0f, -1.0f, 1.0f));
+        this->CircleShader->SetMatrix4x4f(
+            "u_ProjectionMatrix",
+            OrthographicProjection(-aspect * CameraZoom, aspect * CameraZoom, CameraZoom, -CameraZoom, -1.0f, 1.0f));
     }
 private:
     bool Running = true;
 private:
+    f32 CameraZoom                         = 3.0f;
     Ref<Surface> Surface                   = nullptr;
     Ref<RenderContext> RenderContext       = nullptr;
     Ref<Shader> CircleShader               = nullptr;

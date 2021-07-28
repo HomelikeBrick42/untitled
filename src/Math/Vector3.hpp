@@ -70,8 +70,16 @@ struct Vector<3, T> {
         };
     }
 
+    static T SqrLength(const Vector3<T>& v) {
+        return Vector3<T>::Dot(v, v);
+    }
+
+    static T Length(const Vector3<T>& v) {
+        return static_cast<T>(sqrt(static_cast<f64>(Vector3<T>::SqrLength(v))));
+    }
+
     static Vector3<T> Normalise(const Vector3<T>& v) {
-        T length = static_cast<T>(sqrt(static_cast<f64>(Vector3<T>::Dot(v, v))));
+        T length = Vector3<T>::Length(v);
         if (length != T()) {
             return v / length;
         } else {

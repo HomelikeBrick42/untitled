@@ -49,8 +49,16 @@ struct Vector<1, T> {
         return a.x * b.x;
     }
 
+    static T SqrLength(const Vector1<T>& v) {
+        return Vector1<T>::Dot(v, v);
+    }
+
+    static T Length(const Vector1<T>& v) {
+        return static_cast<T>(sqrt(static_cast<f64>(Vector1<T>::SqrLength(v))));
+    }
+
     static Vector1<T> Normalise(const Vector1<T>& v) {
-        T length = static_cast<T>(sqrt(static_cast<f64>(Vector1<T>::Dot(v, v))));
+        T length = Vector1<T>::Length(v);
         if (length != T()) {
             return v / length;
         } else {
