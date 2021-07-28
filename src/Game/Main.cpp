@@ -64,7 +64,7 @@ private:
             vertices, sizeof(vertices), { VertexBufferElement::Float3, VertexBufferElement::Float2 });
 
         this->Circles.Emplace(Vector2f{ +0.0f, 0.0f }, 1.0f, 3.0f, Vector2f{ 0.0f, 0.0f });
-        this->Circles.Emplace(Vector2f{ +0.0f, 5.0f }, 0.5f, 0.5f, Vector2f{ 1.0f, 0.0f });
+        this->Circles.Emplace(Vector2f{ +0.0f, 5.0f }, 0.5f, 0.5f, Vector2f{ 2.0f, 0.0f });
     }
 
     void Update(f32 dt) {
