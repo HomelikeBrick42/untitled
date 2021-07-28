@@ -100,10 +100,10 @@ private:
 
                     f32 fVelocity = Vector2f::Dot(relativeVelocity, tangent);
 
-                    f32 aSF = 0.8f; // circleA.StaticFriction
-                    f32 bSF = 0.8f; // circleB.StaticFriction
-                    f32 aDF = 0.8f; // circleA.DynamicFriction
-                    f32 bDF = 0.8f; // circleB.DynamicFriction
+                    f32 aSF = 0.8f; // TODO: circleA.StaticFriction
+                    f32 bSF = 0.8f; // TODO: circleB.StaticFriction
+                    f32 aDF = 0.8f; // TODO: circleA.DynamicFriction
+                    f32 bDF = 0.8f; // TODO: circleB.DynamicFriction
                     f32 mu  = Vector2f::Length({ aSF, bSF });
 
                     f32 f = -fVelocity / (inverseMassA + inverseMassB);
