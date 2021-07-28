@@ -9,9 +9,9 @@
 
 class Surface: public IRef {
 public:
-    using CloseCallbackFunc  = std::function<void(Ref<Surface> surface, void* userData)>;
-    using ResizeCallbackFunc = std::function<void(Ref<Surface> surface, void* userData, u32 width, u32 height)>;
-    using KeyCallbackFunc    = std::function<void(Ref<Surface> surface, void* userData, KeyCode key, bool pressed)>;
+    using CloseCallbackFunc  = std::function<void(Surface& surface, void* userData)>;
+    using ResizeCallbackFunc = std::function<void(Surface& surface, void* userData, u32 width, u32 height)>;
+    using KeyCallbackFunc    = std::function<void(Surface& surface, void* userData, KeyCode key, bool pressed)>;
 public:
     static Ref<Surface> Create(u32 width, u32 height, const char* title);
     Surface(Surface&)  = delete;

@@ -63,12 +63,12 @@ private:
         this->TriangleVertexBuffer = this->RenderContext->CreateVertexBuffer(
             vertices, sizeof(vertices), { VertexBufferElement::Float3, VertexBufferElement::Float2 });
 
-        this->Circles.Emplace(Vector2f{ -3.0f, 0.0f }, 1.0f, 1.0f, Vector2f{ +0.7f, 0.0f });
-        this->Circles.Emplace(Vector2f{ +3.0f, 0.0f }, 1.0f, 2.0f, Vector2f{ -0.7f, 0.1f });
+        this->Circles.Emplace(Vector2f{ +0.0f, 0.0f }, 1.0f, 3.0f, Vector2f{ 0.0f, 0.0f });
+        this->Circles.Emplace(Vector2f{ +0.0f, 5.0f }, 0.5f, 0.5f, Vector2f{ 1.0f, 0.0f });
     }
 
     void Update(f32 dt) {
-        this->CameraPosition += Vector2f::Normalise(this->MoveDirection) * 5.0f * dt;
+        this->CameraPosition += Vector2f::Normalise(this->MoveDirection) * 15.0f * dt;
         this->Surface->PollEvents();
     }
 
@@ -103,7 +103,7 @@ private:
 
                     // Impulse
 
-                    f32 e            = 0.4f; // TODO: circleA.Bounce * circleB.Bounce
+                    f32 e            = 0.6f; // TODO: circleA.Bounce * circleB.Bounce
                     f32 j            = -(1.0f + e) * normalSpeed / (inverseMassA + inverseMassB);
                     Vector2f impulse = j * collisionNormal;
 
@@ -173,18 +173,18 @@ private:
 
     void Shutdown() {}
 private:
-    void SurfaceCloseCallback(Ref<Surface> surface, void* userData) {
+    void SurfaceCloseCallback(Surface& surface, void* userData) {
         this->Running = false;
     }
 
-    void SurfaceResizeCallback(Ref<Surface> surface, void* userData, u32 width, u32 height) {
+    void SurfaceResizeCallback(Surface& surface, void* userData, u32 width, u32 height) {
         this->SurfaceWidth  = width;
         this->SurfaceHeight = height;
         this->RenderContext->SetViewport(0, 0, width, height);
         this->RecalculateCamera();
     }
 
-    void SurfaceKeyCallback(Ref<Surface> surface, void* userData, KeyCode key, bool pressed) {
+    void SurfaceKeyCallback(Surface& surface, void* userData, KeyCode key, bool pressed) {
         if (pressed) {
             switch (key) {
                 case KeyCode_W: {

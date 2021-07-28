@@ -116,7 +116,7 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
         case WM_CLOSE:
         case WM_QUIT:
         case WM_DESTROY: {
-            this->CloseCallback(this, this->CloseCallbackUserData);
+            this->CloseCallback(*this, this->CloseCallbackUserData);
         } break;
 
         case WM_SIZE: {
@@ -125,7 +125,7 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
             s32 width  = clientRect.right - clientRect.left;
             s32 height = clientRect.bottom - clientRect.top;
             if (width > 0 && height > 0) {
-                this->ResizeCallback(this, this->ResizeCallbackUserData, static_cast<u32>(width), static_cast<u32>(height));
+                this->ResizeCallback(*this, this->ResizeCallbackUserData, static_cast<u32>(width), static_cast<u32>(height));
             }
         } break;
 
@@ -184,7 +184,7 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
             }
 
             for (u64 i = 0; i < (lParam & 0xFF); i++) {
-                this->KeyCallback(this, this->KeyCallbackUserData, key, pressed);
+                this->KeyCallback(*this, this->KeyCallbackUserData, key, pressed);
             }
 
             result = DefWindowProcA(hWnd, message, wParam, lParam);
