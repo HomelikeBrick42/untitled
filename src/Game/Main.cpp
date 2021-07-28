@@ -49,8 +49,8 @@ private:
         this->TriangleVertexBuffer = this->RenderContext->CreateVertexBuffer(
             vertices, sizeof(vertices), { VertexBufferElement::Float3, VertexBufferElement::Float2 });
 
-        this->Circles.Emplace(Vector2f{ -1.0f, 0.0f }, 1.0f);
-        this->Circles.Emplace(Vector2f{ +1.0f, 0.0f }, 1.0f);
+        this->Circles.Emplace(Vector2f{ -1.0f, 0.0f }, 0.9f);
+        this->Circles.Emplace(Vector2f{ +1.0f, 0.0f }, 0.9f);
     }
 
     void Update() {
@@ -72,7 +72,8 @@ private:
 
             this->CircleShader->Bind();
             this->CircleShader->SetMatrix4x4f("u_ModelMatrix",
-                                              TranslationMatrix(Vector3f{ circle.Position.x, circle.Position.y, 0.0f }));
+                                              ScaleMatrix(Vector3f{ circle.Radius }) *
+                                                  TranslationMatrix(Vector3f{ circle.Position.x, circle.Position.y, 0.0f }));
             this->CircleShader->SetVector4f("u_Color", { 1.0f, 0.0f, 0.0f, 1.0f }); // TODO: Color per circle
             this->TriangleVertexBuffer->Bind();
             this->RenderContext->Draw(0, 6);
@@ -117,7 +118,7 @@ layout(location = 0) out vec2 v_Coord;
 
 void main() {
     v_Coord = a_Coord;
-    gl_Position = u_ModelMatrix * inverse(u_ViewMatrix) * u_ProjectionMatrix * a_Position;
+    gl_Position = u_ProjectionMatrix * inverse(u_ViewMatrix) * u_ModelMatrix * a_Position;
 }
 )";
     const String FragmentShaderSource = R"(
