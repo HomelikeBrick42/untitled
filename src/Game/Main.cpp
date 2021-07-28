@@ -20,11 +20,19 @@ public:
         this->Init();
         using namespace std::chrono_literals;
 
+        const f32 FixedUpdateInterval = 1.0f / 60.0f;
+        f32 fixedUpdateTime = 0.0;
         auto lastTime = std::chrono::high_resolution_clock::now();
         while (this->Running) {
             auto time = std::chrono::high_resolution_clock::now();
             f32 delta = std::chrono::duration<f32>(time - lastTime).count();
             lastTime  = std::chrono::high_resolution_clock::now();
+
+            fixedUpdateTime += delta;
+            while (fixedUpdateTime >= FixedUpdateInterval) {
+                this->FixedUpdate(FixedUpdateInterval);
+                fixedUpdateTime -= FixedUpdateInterval;
+            }
 
             this->Update(delta);
             this->Render();
@@ -64,13 +72,27 @@ private:
     }
 
     void Update(f32 dt) {
+        this->Surface->PollEvents();
+    }
+
+    void FixedUpdate(f32 dt) {
         for (u64 aIndex = 0; aIndex < this->Circles.Length; aIndex++) {
             Circle& circleA = Circles[aIndex];
 
             for (u64 bIndex = aIndex + 1; bIndex < this->Circles.Length; bIndex++) {
                 Circle& circleB = Circles[bIndex];
 
-                if (Vector2f::Length(circleB.Position - circleA.Position) < (circleA.Radius + circleB.Radius)) { // TODO: Optimise
+                f32 distance = Vector2f::Length(circleB.Position - circleA.Position);
+
+                // Gravity
+                const f32 Gravity     = 10.0f;
+                Vector2f gravityForce = Gravity * ((circleA.Mass * circleB.Mass) / (distance * distance)) *
+                                        Vector2f::Normalise(circleB.Position - circleA.Position);
+                circleA.Acceleration += gravityForce;
+                circleB.Acceleration -= gravityForce;
+
+                // Collision
+                if (distance < (circleA.Radius + circleB.Radius)) {
                     Vector2f collisionNormal  = Vector2f::Normalise(circleB.Position - circleA.Position);
                     Vector2f relativeVelocity = circleB.Velocity - circleA.Velocity;
                     f32 normalSpeed           = Vector2f::Dot(relativeVelocity, collisionNormal);
@@ -84,7 +106,7 @@ private:
 
                     // Impulse
 
-                    f32 e            = 1.0f; // TODO: circleA.Bounce * circleB.Bounce
+                    f32 e            = 0.4f; // TODO: circleA.Bounce * circleB.Bounce
                     f32 j            = -(1.0f + e) * normalSpeed / (inverseMassA + inverseMassB);
                     Vector2f impulse = j * collisionNormal;
 
@@ -118,6 +140,9 @@ private:
 
                     circleA.Velocity -= friction * inverseMassA;
                     circleB.Velocity += friction * inverseMassB;
+
+                    circleA.Position += (distance - (circleA.Radius + circleB.Radius)) * collisionNormal;
+                    circleB.Position -= (distance - (circleA.Radius + circleB.Radius)) * collisionNormal;
                 }
             }
 
@@ -125,8 +150,6 @@ private:
             circleA.Acceleration = 0.0;
             circleA.Position += circleA.Velocity * dt;
         }
-
-        this->Surface->PollEvents();
     }
 
     void Render() {
@@ -167,7 +190,7 @@ private:
 private:
     bool Running = true;
 private:
-    f32 CameraZoom                         = 3.0f;
+    f32 CameraZoom                         = 10.0f;
     Ref<Surface> Surface                   = nullptr;
     Ref<RenderContext> RenderContext       = nullptr;
     Ref<Shader> CircleShader               = nullptr;
