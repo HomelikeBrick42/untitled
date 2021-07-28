@@ -1,0 +1,45 @@
+#pragma once
+
+#include "Core/Defines.hpp"
+
+enum KeyCode : u16 {
+    KeyCode_Unknown = 0,
+
+    KeyCode_0 = '0',
+    KeyCode_1 = '1',
+    KeyCode_2 = '2',
+    KeyCode_3 = '3',
+    KeyCode_4 = '4',
+    KeyCode_5 = '5',
+    KeyCode_6 = '6',
+    KeyCode_7 = '7',
+    KeyCode_8 = '8',
+    KeyCode_9 = '9',
+
+    KeyCode_A = 'A',
+    KeyCode_B = 'B',
+    KeyCode_C = 'C',
+    KeyCode_D = 'D',
+    KeyCode_E = 'E',
+    KeyCode_F = 'F',
+    KeyCode_G = 'G',
+    KeyCode_H = 'H',
+    KeyCode_I = 'I',
+    KeyCode_J = 'J',
+    KeyCode_K = 'K',
+    KeyCode_L = 'L',
+    KeyCode_M = 'M',
+    KeyCode_N = 'N',
+    KeyCode_O = 'O',
+    KeyCode_P = 'P',
+    KeyCode_Q = 'Q',
+    KeyCode_R = 'R',
+    KeyCode_S = 'S',
+    KeyCode_T = 'T',
+    KeyCode_U = 'U',
+    KeyCode_V = 'V',
+    KeyCode_W = 'W',
+    KeyCode_X = 'X',
+    KeyCode_Y = 'Y',
+    KeyCode_Z = 'Z',
+};

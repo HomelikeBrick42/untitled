@@ -24,6 +24,7 @@ add_executable(
         src/Containers/String.cpp
         src/Containers/String.hpp
         src/Core/Defines.hpp
+        src/Core/KeyCode.hpp
         src/Core/Ref.hpp
         src/Core/Surface.cpp
         src/Core/Surface.hpp

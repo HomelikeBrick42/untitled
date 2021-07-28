@@ -21,8 +21,8 @@ public:
         using namespace std::chrono_literals;
 
         const f32 FixedUpdateInterval = 1.0f / 60.0f;
-        f32 fixedUpdateTime = 0.0;
-        auto lastTime = std::chrono::high_resolution_clock::now();
+        f32 fixedUpdateTime           = 0.0;
+        auto lastTime                 = std::chrono::high_resolution_clock::now();
         while (this->Running) {
             auto time = std::chrono::high_resolution_clock::now();
             f32 delta = std::chrono::duration<f32>(time - lastTime).count();
@@ -41,20 +41,16 @@ public:
     }
 private:
     void Init() {
-        u32 width     = 640;
-        u32 height    = 480;
-        this->Surface = Surface::Create(width, height, "Surface");
+        this->Surface = Surface::Create(this->SurfaceWidth, this->SurfaceHeight, "Surface");
         this->Surface->SetCloseCallback(BIND_MEMBER_FN(SurfaceCloseCallback), nullptr);
         this->Surface->SetResizeCallback(BIND_MEMBER_FN(SurfaceResizeCallback), nullptr);
+        this->Surface->SetKeyCallback(BIND_MEMBER_FN(SurfaceKeyCallback), nullptr);
 
         this->RenderContext = this->Surface->CreateRenderContext(RendererAPI::OpenGL);
 
         this->CircleShader = this->RenderContext->CreateShader(VertexShaderSource, FragmentShaderSource);
 
-        f32 aspect = static_cast<f32>(width) / static_cast<f32>(height);
-        this->CircleShader->SetMatrix4x4f(
-            "u_ProjectionMatrix",
-            OrthographicProjection(-aspect * CameraZoom, aspect * CameraZoom, CameraZoom, -CameraZoom, -1.0f, 1.0f));
+        this->RecalculateCamera();
 
         struct {
             Vector3f Position;
@@ -72,6 +68,7 @@ private:
     }
 
     void Update(f32 dt) {
+        this->CameraPosition += Vector2f::Normalise(this->MoveDirection) * 5.0f * dt;
         this->Surface->PollEvents();
     }
 
@@ -156,7 +153,8 @@ private:
         this->RenderContext->SetClearColor({ 0.1f, 0.1f, 0.1f });
         this->RenderContext->Clear();
 
-        this->CircleShader->SetMatrix4x4f("u_ViewMatrix", Matrix4x4f::Identity());
+        this->CircleShader->SetMatrix4x4f("u_ViewMatrix",
+                                          TranslationMatrix(Vector3f{ CameraPosition.x, CameraPosition.y, 0.0f }));
 
         for (u64 i = 0; i < this->Circles.Length; i++) {
             Circle& circle = Circles[i];
@@ -175,14 +173,59 @@ private:
 
     void Shutdown() {}
 private:
-    void SurfaceCloseCallback(Surface* surface, void* userData) {
+    void SurfaceCloseCallback(Ref<Surface> surface, void* userData) {
         this->Running = false;
     }
 
-    void SurfaceResizeCallback(Surface* surface, void* userData, u32 width, u32 height) {
+    void SurfaceResizeCallback(Ref<Surface> surface, void* userData, u32 width, u32 height) {
+        this->SurfaceWidth  = width;
+        this->SurfaceHeight = height;
         this->RenderContext->SetViewport(0, 0, width, height);
+        this->RecalculateCamera();
+    }
 
-        f32 aspect = static_cast<f32>(width) / static_cast<f32>(height);
+    void SurfaceKeyCallback(Ref<Surface> surface, void* userData, KeyCode key, bool pressed) {
+        if (pressed) {
+            switch (key) {
+                case KeyCode_W: {
+                    MoveDirection.y = +1.0f;
+                } break;
+
+                case KeyCode_S: {
+                    MoveDirection.y = -1.0f;
+                } break;
+
+                case KeyCode_A: {
+                    MoveDirection.x = -1.0f;
+                } break;
+
+                case KeyCode_D: {
+                    MoveDirection.x = +1.0f;
+                } break;
+
+                default: {
+                } break;
+            }
+        } else {
+            switch (key) {
+                case KeyCode_W:
+                case KeyCode_S: {
+                    MoveDirection.y = 0.0f;
+                } break;
+
+                case KeyCode_A:
+                case KeyCode_D: {
+                    MoveDirection.x = 0.0f;
+                } break;
+
+                default: {
+                } break;
+            }
+        }
+    }
+private:
+    void RecalculateCamera() {
+        f32 aspect = static_cast<f32>(this->SurfaceWidth) / static_cast<f32>(this->SurfaceHeight);
         this->CircleShader->SetMatrix4x4f(
             "u_ProjectionMatrix",
             OrthographicProjection(-aspect * CameraZoom, aspect * CameraZoom, CameraZoom, -CameraZoom, -1.0f, 1.0f));
@@ -190,7 +233,11 @@ private:
 private:
     bool Running = true;
 private:
+    Vector2f CameraPosition                = 0.0f;
+    Vector2f MoveDirection                 = 0.0f;
     f32 CameraZoom                         = 10.0f;
+    u32 SurfaceWidth                       = 640;
+    u32 SurfaceHeight                      = 480;
     Ref<Surface> Surface                   = nullptr;
     Ref<RenderContext> RenderContext       = nullptr;
     Ref<Shader> CircleShader               = nullptr;

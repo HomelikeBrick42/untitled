@@ -22,6 +22,10 @@ public:
         this->ResizeCallback         = callback;
         this->ResizeCallbackUserData = userData;
     }
+    void SetKeyCallback(KeyCallbackFunc callback, void* userData) final {
+        this->KeyCallback         = callback;
+        this->KeyCallbackUserData = userData;
+    }
 public:
     Ref<RenderContext> CreateRenderContext(RendererAPI api) final;
 private:
@@ -36,6 +40,8 @@ private:
     void* CloseCallbackUserData       = nullptr;
     ResizeCallbackFunc ResizeCallback = nullptr;
     void* ResizeCallbackUserData      = nullptr;
+    KeyCallbackFunc KeyCallback       = nullptr;
+    void* KeyCallbackUserData         = nullptr;
 private:
     static u64 SurfaceCount;
 };

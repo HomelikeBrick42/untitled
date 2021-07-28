@@ -129,6 +129,67 @@ LRESULT WindowsSurface::WindowMessageCallback(HWND hWnd, UINT message, WPARAM wP
             }
         } break;
 
+        case WM_KEYDOWN:
+        case WM_SYSKEYDOWN:
+        case WM_KEYUP:
+        case WM_SYSKEYUP: {
+            bool pressed = message == WM_KEYDOWN || message == WM_SYSKEYDOWN;
+            KeyCode key  = KeyCode_Unknown;
+            switch (wParam) {
+    #define KEY(value, keycode) \
+        case value: {           \
+            key = keycode;      \
+        } break;
+                KEY(0x30, KeyCode_0);
+                KEY(0x31, KeyCode_1);
+                KEY(0x32, KeyCode_2);
+                KEY(0x33, KeyCode_3);
+                KEY(0x34, KeyCode_4);
+                KEY(0x35, KeyCode_5);
+                KEY(0x36, KeyCode_6);
+                KEY(0x37, KeyCode_7);
+                KEY(0x38, KeyCode_8);
+                KEY(0x39, KeyCode_9);
+
+                KEY(0x41, KeyCode_A);
+                KEY(0x42, KeyCode_B);
+                KEY(0x43, KeyCode_C);
+                KEY(0x44, KeyCode_D);
+                KEY(0x45, KeyCode_E);
+                KEY(0x46, KeyCode_F);
+                KEY(0x47, KeyCode_G);
+                KEY(0x48, KeyCode_H);
+                KEY(0x49, KeyCode_I);
+                KEY(0x4A, KeyCode_J);
+                KEY(0x4B, KeyCode_K);
+                KEY(0x4C, KeyCode_L);
+                KEY(0x4D, KeyCode_M);
+                KEY(0x4E, KeyCode_N);
+                KEY(0x4F, KeyCode_O);
+                KEY(0x50, KeyCode_P);
+                KEY(0x51, KeyCode_Q);
+                KEY(0x52, KeyCode_R);
+                KEY(0x53, KeyCode_S);
+                KEY(0x54, KeyCode_T);
+                KEY(0x55, KeyCode_U);
+                KEY(0x56, KeyCode_V);
+                KEY(0x57, KeyCode_W);
+                KEY(0x58, KeyCode_X);
+                KEY(0x59, KeyCode_Y);
+                KEY(0x5A, KeyCode_Z);
+    #undef KEY
+                default: {
+                    key = KeyCode_Unknown;
+                } break;
+            }
+
+            for (u64 i = 0; i < (lParam & 0xFF); i++) {
+                this->KeyCallback(this, this->KeyCallbackUserData, key, pressed);
+            }
+
+            result = DefWindowProcA(hWnd, message, wParam, lParam);
+        } break;
+
         default: {
             result = DefWindowProcA(hWnd, message, wParam, lParam);
         } break;
