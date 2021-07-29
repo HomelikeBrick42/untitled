@@ -63,8 +63,8 @@ private:
         this->TriangleVertexBuffer = this->RenderContext->CreateVertexBuffer(
             vertices, sizeof(vertices), { VertexBufferElement::Float3, VertexBufferElement::Float2 });
 
-        this->Circles.Emplace(Vector2f{ +0.0f, 0.0f }, 1.0f, 3.0f, Vector2f{ 0.0f, 0.0f });
-        this->Circles.Emplace(Vector2f{ +0.0f, 5.0f }, 0.5f, 0.5f, Vector2f{ 2.0f, 0.0f });
+        this->Circles.Emplace(Vector2f{ 0.0f, 0.0f }, 1.0f, 3.0f, Vector2f{ 0.0f, 0.0f });
+        this->Circles.Emplace(Vector2f{ 0.0f, 5.0f }, 0.5f, 0.5f, Vector2f{ 2.0f, 0.0f });
     }
 
     void Update(f32 dt) {
@@ -103,7 +103,7 @@ private:
 
                     // Impulse
 
-                    f32 e            = 0.6f; // TODO: circleA.Bounce * circleB.Bounce
+                    f32 e            = circleA.Bounce * circleB.Bounce;
                     f32 j            = -(1.0f + e) * normalSpeed / (inverseMassA + inverseMassB);
                     Vector2f impulse = j * collisionNormal;
 
@@ -119,11 +119,7 @@ private:
 
                     f32 fVelocity = Vector2f::Dot(relativeVelocity, tangent);
 
-                    f32 aSF = 0.8f; // TODO: circleA.StaticFriction
-                    f32 bSF = 0.8f; // TODO: circleB.StaticFriction
-                    f32 aDF = 0.8f; // TODO: circleA.DynamicFriction
-                    f32 bDF = 0.8f; // TODO: circleB.DynamicFriction
-                    f32 mu  = Vector2f::Length({ aSF, bSF });
+                    f32 mu = Vector2f::Length({ circleA.StaticFriction, circleB.StaticFriction });
 
                     f32 f = -fVelocity / (inverseMassA + inverseMassB);
 
@@ -131,7 +127,7 @@ private:
                     if (fabsf(f) < j * mu) {
                         friction = f * tangent;
                     } else {
-                        mu       = Vector2f::Length({ aDF, bDF });
+                        mu       = Vector2f::Length({ circleA.DynamicFriction, circleB.DynamicFriction });
                         friction = -j * tangent * mu;
                     }
 
