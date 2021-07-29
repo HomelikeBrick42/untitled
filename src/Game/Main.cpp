@@ -18,15 +18,17 @@ public:
 public:
     void Run() {
         this->Init();
+
         using namespace std::chrono_literals;
+        using namespace std::chrono;
 
         const f32 FixedUpdateInterval = 1.0f / 60.0f;
         f32 fixedUpdateTime           = 0.0;
-        auto lastTime                 = std::chrono::high_resolution_clock::now();
+        auto lastTime                 = high_resolution_clock::now();
         while (this->Running) {
-            auto time = std::chrono::high_resolution_clock::now();
-            f32 delta = std::chrono::duration<f32>(time - lastTime).count();
-            lastTime  = std::chrono::high_resolution_clock::now();
+            auto time = high_resolution_clock::now();
+            f32 delta = duration<f32>(time - lastTime).count();
+            lastTime  = high_resolution_clock::now();
 
             fixedUpdateTime += delta;
             while (fixedUpdateTime >= FixedUpdateInterval) {
@@ -229,16 +231,16 @@ private:
 private:
     bool Running = true;
 private:
-    Vector2f CameraPosition                = 0.0f;
-    Vector2f MoveDirection                 = 0.0f;
-    f32 CameraZoom                         = 10.0f;
-    u32 SurfaceWidth                       = 640;
-    u32 SurfaceHeight                      = 480;
-    Ref<Surface> Surface                   = nullptr;
-    Ref<RenderContext> RenderContext       = nullptr;
-    Ref<Shader> CircleShader               = nullptr;
-    Ref<VertexBuffer> CircleVertexBuffer   = nullptr;
-    Array<Circle> Circles                  = {};
+    Vector2f CameraPosition              = 0.0f;
+    Vector2f MoveDirection               = 0.0f;
+    f32 CameraZoom                       = 10.0f;
+    u32 SurfaceWidth                     = 640;
+    u32 SurfaceHeight                    = 480;
+    Ref<Surface> Surface                 = nullptr;
+    Ref<RenderContext> RenderContext     = nullptr;
+    Ref<Shader> CircleShader             = nullptr;
+    Ref<VertexBuffer> CircleVertexBuffer = nullptr;
+    Array<Circle> Circles                = {};
 private:
     const String VertexShaderSource   = R"(
 #version 440 core
