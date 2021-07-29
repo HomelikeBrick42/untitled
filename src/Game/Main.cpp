@@ -55,13 +55,13 @@ private:
         struct {
             Vector3f Position;
             Vector2f Coord;
-        } vertices[] = {
+        } circleVertices[] = {
             { { -1.0f, +1.0f, 0.0f }, { -1.0f, +1.0f } }, { { +1.0f, +1.0f, 0.0f }, { +1.0f, +1.0f } },
             { { +1.0f, -1.0f, 0.0f }, { +1.0f, -1.0f } }, { { -1.0f, +1.0f, 0.0f }, { -1.0f, +1.0f } },
             { { +1.0f, -1.0f, 0.0f }, { +1.0f, -1.0f } }, { { -1.0f, -1.0f, 0.0f }, { -1.0f, -1.0f } },
         };
-        this->TriangleVertexBuffer = this->RenderContext->CreateVertexBuffer(
-            vertices, sizeof(vertices), { VertexBufferElement::Float3, VertexBufferElement::Float2 });
+        this->CircleVertexBuffer = this->RenderContext->CreateVertexBuffer(
+            circleVertices, sizeof(circleVertices), { VertexBufferElement::Float3, VertexBufferElement::Float2 });
 
         this->Circles.Emplace(Vector2f{ 0.0f, 0.0f }, 1.0f, 3.0f, Vector2f{ 0.0f, 0.0f });
         this->Circles.Emplace(Vector2f{ 0.0f, 5.0f }, 0.5f, 0.5f, Vector2f{ 2.0f, 0.0f });
@@ -160,7 +160,7 @@ private:
                                               ScaleMatrix(Vector3f{ circle.Radius }) *
                                                   TranslationMatrix(Vector3f{ circle.Position.x, circle.Position.y, 0.0f }));
             this->CircleShader->SetVector4f("u_Color", { 1.0f, 0.0f, 0.0f, 1.0f }); // TODO: Color per circle
-            this->TriangleVertexBuffer->Bind();
+            this->CircleVertexBuffer->Bind();
             this->RenderContext->Draw(0, 6);
         }
 
@@ -237,7 +237,7 @@ private:
     Ref<Surface> Surface                   = nullptr;
     Ref<RenderContext> RenderContext       = nullptr;
     Ref<Shader> CircleShader               = nullptr;
-    Ref<VertexBuffer> TriangleVertexBuffer = nullptr;
+    Ref<VertexBuffer> CircleVertexBuffer   = nullptr;
     Array<Circle> Circles                  = {};
 private:
     const String VertexShaderSource   = R"(
